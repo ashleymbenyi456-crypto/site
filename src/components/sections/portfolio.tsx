@@ -10,8 +10,6 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { motion } from "framer-motion";
-import { useState } from "react";
-import { cn } from "@/lib/utils";
 
 const portfolioItems = [
   {
@@ -41,87 +39,42 @@ const portfolioItems = [
 ];
 
 function PortfolioCard({ item }: { item: typeof portfolioItems[0] }) {
-  const [isFlipped, setIsFlipped] = useState(false);
   const image = PlaceHolderImages.find((img) => img.id === item.id);
 
-  const flipVariants = {
-    front: { rotateY: 0 },
-    back: { rotateY: 180 },
-  };
-
   return (
-    <div
-      className="perspective-1000 w-full h-[450px]"
-      onMouseEnter={() => setIsFlipped(true)}
-      onMouseLeave={() => setIsFlipped(false)}
-      onClick={() => setIsFlipped(!isFlipped)}
-    >
-      <motion.div
-        className="relative w-full h-full"
-        style={{ transformStyle: "preserve-3d" }}
-        initial={false}
-        animate={isFlipped ? "back" : "front"}
-        variants={flipVariants}
-        transition={{ duration: 0.6, ease: "easeInOut" }}
-      >
-        {/* Front of the card */}
-        <motion.div
-          className={cn(
-            "absolute w-full h-full backface-hidden",
-            "cursor-pointer"
-          )}
-        >
-          <Card className="overflow-hidden group transition-all duration-300 shadow-sm hover:shadow-xl h-full flex flex-col">
-            <div className="overflow-hidden relative h-full">
-              {image && (
-                <Image
-                  src={image.imageUrl}
-                  alt={item.title}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  data-ai-hint={image.imageHint}
-                />
-              )}
-               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-               <div className="absolute bottom-0 left-0 p-6">
-                <CardTitle className="font-headline text-xl text-white">
-                  {item.title}
-                </CardTitle>
-              </div>
-            </div>
-          </Card>
-        </motion.div>
-
-        {/* Back of the card */}
-        <motion.div
-          className={cn(
-            "absolute w-full h-full backface-hidden",
-            "cursor-pointer"
-          )}
-          style={{ transform: "rotateY(180deg)" }}
-        >
-          <Card className="h-full flex flex-col bg-secondary/80 p-6">
-            <CardHeader className="p-0">
-              <CardTitle className="font-headline text-xl text-primary mb-2">
-                {item.client}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col flex-grow p-0 mt-4">
-              <p className="text-muted-foreground mb-4 flex-grow">
-                {item.description}
-              </p>
-              <div className="flex flex-wrap gap-2 mt-auto">
-                {item.services.map((service) => (
-                  <Badge key={service} variant="secondary" className="bg-background">
-                    {service}
-                  </Badge>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </motion.div>
-    </div>
+    <Card className="overflow-hidden group transition-all duration-300 shadow-sm hover:shadow-xl h-full flex flex-col">
+      <div className="overflow-hidden relative h-full">
+        {image && (
+          <Image
+            src={image.imageUrl}
+            alt={item.title}
+            width={600}
+            height={400}
+            className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+            data-ai-hint={image.imageHint}
+          />
+        )}
+         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+         <div className="absolute bottom-0 left-0 p-6">
+          <h3 className="font-headline text-xl text-white mb-1">
+            {item.client}
+          </h3>
+          <p className="text-white/80">{item.title}</p>
+        </div>
+      </div>
+      <CardContent className="p-6 bg-background">
+        <p className="text-muted-foreground mb-4 flex-grow">
+          {item.description}
+        </p>
+        <div className="flex flex-wrap gap-2 mt-auto">
+          {item.services.map((service) => (
+            <Badge key={service} variant="secondary">
+              {service}
+            </Badge>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
