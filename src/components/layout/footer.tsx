@@ -1,3 +1,4 @@
+
 import { TwitterIcon, LinkedinIcon, InstagramIcon } from "lucide-react";
 import Link from "next/link";
 
@@ -8,9 +9,9 @@ export function Footer() {
         <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
           <div className="flex items-center gap-3">
             
-            <span className="text-lg font-semibold font-headline text-primary">Global Leap Marketing</span>
+            <span className="text-lg font-semibold font-headline text-primary">Global Grid Digital Marketing</span>
           </div>
-          <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} Global Leap Marketing. All rights reserved.</p>
+          <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} Global Grid Digital Marketing. All rights reserved.</p>
           <div className="flex items-center gap-5">
             <Link href="#" className="text-muted-foreground hover:text-accent" prefetch={false}>
               <TwitterIcon className="h-5 w-5" />

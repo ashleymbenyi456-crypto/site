@@ -1,6 +1,7 @@
-# Global Leap Marketing Website
 
-This is the official website for Global Leap Marketing, a modern and responsive single-page application designed to showcase the company's services, portfolio, and contact information. It was built using Next.js and Firebase Studio.
+# Global Grid Digital Marketing Website
+
+This is the official website for Global Grid Digital Marketing, a modern and responsive single-page application designed to showcase the company's services, portfolio, and contact information. It was built using Next.js and Firebase Studio.
 
 ## ✨ Features
 

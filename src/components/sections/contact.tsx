@@ -108,7 +108,7 @@ export function Contact() {
               Let's turn your vision into measurable results. Fill out the form for a no-obligation strategy session, and we'll explore how we can elevate your marketing efforts.
             </motion.p>
             <motion.p variants={itemVariants} className="text-muted-foreground md:text-lg">
-              For partnership inquiries or other questions, feel free to email us at <a href="mailto:hello@globalleap.com" className="text-accent underline">hello@globalleap.com</a>.
+              For partnership inquiries or other questions, feel free to email us at <a href="mailto:hello@globalgrid.com" className="text-accent underline">hello@globalgrid.com</a>.
             </motion.p>
           </motion.div>
           <motion.div

@@ -68,7 +68,7 @@ export function Hero() {
             className="mt-6 text-lg text-muted-foreground md:text-xl max-w-3xl mx-auto"
             variants={itemVariants}
           >
-            Global Leap Marketing delivers innovative digital marketing strategies
+            Global Grid Digital Marketing delivers innovative digital marketing strategies
             that drive growth, engagement, and measurable results. Let's build
             your future, together.
           </motion.p>

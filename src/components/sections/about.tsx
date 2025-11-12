@@ -88,7 +88,7 @@ export function About() {
             variants={itemVariants}
             className="mt-4 text-muted-foreground md:text-lg max-w-3xl mx-auto"
           >
-            Global Leap Marketing is a team of passionate marketers, creative thinkers, and data-driven strategists dedicated to helping businesses like yours achieve exponential growth. We believe in building partnerships, not just campaigns.
+            Global Grid Digital Marketing is a team of passionate marketers, creative thinkers, and data-driven strategists dedicated to helping businesses like yours achieve exponential growth. We believe in building partnerships, not just campaigns.
           </motion.p>
         </motion.div>
 
