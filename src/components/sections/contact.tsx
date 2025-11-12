@@ -16,6 +16,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
+import { motion } from "framer-motion";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -66,87 +67,122 @@ export function Contact() {
     }
   }, [state, toast]);
 
+  const sectionVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.5 } },
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" } },
+  };
+
   return (
-    <section id="contact" className="w-full py-20 md:py-28 lg:py-32">
+    <motion.section
+      id="contact"
+      className="w-full py-20 md:py-28 lg:py-32"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={sectionVariants}
+    >
       <div className="container mx-auto max-w-7xl px-4 md:px-6">
         <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div className="space-y-6">
-                <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm font-medium text-primary">Contact Us</div>
-                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline text-primary">
-                    Let's Grow Your Business
-                </h2>
-                <p className="text-muted-foreground md:text-xl">
-                    Ready to take the next step? Fill out the form below for a free
-                    consultation. We're excited to learn about your goals and how we can help you achieve them.
-                </p>
-                <p className="text-muted-foreground md:text-xl">
-                    For general inquiries, you can also reach us at <a href="mailto:hello@globalleap.com" className="text-accent underline">hello@globalleap.com</a>.
-                </p>
-            </div>
-            <div className="mx-auto w-full max-w-xl">
+          <motion.div
+            className="space-y-6"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={{
+              visible: {
+                transition: {
+                  staggerChildren: 0.2,
+                },
+              },
+            }}
+          >
+            <motion.div variants={itemVariants} className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm font-medium text-primary">Contact Us</motion.div>
+            <motion.h2 variants={itemVariants} className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline text-primary">
+              Let's Grow Your Business
+            </motion.h2>
+            <motion.p variants={itemVariants} className="text-muted-foreground md:text-xl">
+              Ready to take the next step? Fill out the form below for a free
+              consultation. We're excited to learn about your goals and how we can help you achieve them.
+            </motion.p>
+            <motion.p variants={itemVariants} className="text-muted-foreground md:text-xl">
+              For general inquiries, you can also reach us at <a href="mailto:hello@globalleap.com" className="text-accent underline">hello@globalleap.com</a>.
+            </motion.p>
+          </motion.div>
+          <motion.div
+            className="mx-auto w-full max-w-xl"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
             <form ref={formRef} action={formAction} className="space-y-6">
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div className="space-y-2">
-                    <Label htmlFor="name">Name</Label>
-                    <Input id="name" name="name" placeholder="Your Name" required />
-                    {state.errors?.name && (
+                  <Label htmlFor="name">Name</Label>
+                  <Input id="name" name="name" placeholder="Your Name" required />
+                  {state.errors?.name && (
                     <p className="text-sm text-destructive">{state.errors.name[0]}</p>
-                    )}
+                  )}
                 </div>
                 <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
+                  <Label htmlFor="email">Email</Label>
+                  <Input
                     id="email"
                     name="email"
                     type="email"
                     placeholder="your@email.com"
                     required
-                    />
-                    {state.errors?.email && (
+                  />
+                  {state.errors?.email && (
                     <p className="text-sm text-destructive">{state.errors.email[0]}</p>
-                    )}
+                  )}
                 </div>
-                </div>
-                <div className="space-y-2">
+              </div>
+              <div className="space-y-2">
                 <Label htmlFor="company">Company (Optional)</Label>
                 <Input id="company" name="company" placeholder="Your Company" />
-                </div>
-                <div className="space-y-2">
+              </div>
+              <div className="space-y-2">
                 <Label htmlFor="service">Service of Interest</Label>
                 <Select name="service" required>
-                    <SelectTrigger id="service">
+                  <SelectTrigger id="service">
                     <SelectValue placeholder="Select a service" />
-                    </SelectTrigger>
-                    <SelectContent>
+                  </SelectTrigger>
+                  <SelectContent>
                     {services.map((service) => (
-                        <SelectItem key={service} value={service}>
+                      <SelectItem key={service} value={service}>
                         {service}
-                        </SelectItem>
+                      </SelectItem>
                     ))}
-                    </SelectContent>
+                  </SelectContent>
                 </Select>
                 {state.errors?.service && (
-                    <p className="text-sm text-destructive">{state.errors.service[0]}</p>
-                    )}
-                </div>
-                <div className="space-y-2">
+                  <p className="text-sm text-destructive">{state.errors.service[0]}</p>
+                )}
+              </div>
+              <div className="space-y-2">
                 <Label htmlFor="message">Message</Label>
                 <Textarea
-                    id="message"
-                    name="message"
-                    placeholder="Tell us about your project..."
-                    rows={5}
-                    required
+                  id="message"
+                  name="message"
+                  placeholder="Tell us about your project..."
+                  rows={5}
+                  required
                 />
                 {state.errors?.message && (
-                    <p className="text-sm text-destructive">{state.errors.message[0]}</p>
-                    )}
-                </div>
-                <SubmitButton />
+                  <p className="text-sm text-destructive">{state.errors.message[0]}</p>
+                )}
+              </div>
+              <SubmitButton />
             </form>
-            </div>
+          </motion.div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import {
   Carousel,
@@ -10,6 +12,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { Star } from "lucide-react";
+import { motion } from "framer-motion";
 
 const testimonials = [
   {
@@ -36,16 +39,40 @@ const testimonials = [
 ];
 
 export function Testimonials() {
+  const sectionVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.5 } },
+  };
+
   return (
-    <section id="testimonials" className="w-full py-20 md:py-28 lg:py-32 bg-secondary/50">
+    <motion.section
+      id="testimonials"
+      className="w-full py-20 md:py-28 lg:py-32 bg-secondary/50"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={sectionVariants}
+    >
       <div className="container mx-auto max-w-7xl px-4 md:px-6">
         <div className="mb-16 text-center">
-          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline text-primary">
+          <motion.h2
+            className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline text-primary"
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.5 }}
+          >
             What Our Clients Say
-          </h2>
-          <p className="mt-4 max-w-3xl mx-auto text-muted-foreground md:text-xl">
+          </motion.h2>
+          <motion.p
+            className="mt-4 max-w-3xl mx-auto text-muted-foreground md:text-xl"
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
             Real stories from businesses we've helped to succeed.
-          </p>
+          </motion.p>
         </div>
         <Carousel
           opts={{
@@ -95,6 +122,6 @@ export function Testimonials() {
           <CarouselNext className="right-[-50px]"/>
         </Carousel>
       </div>
-    </section>
+    </motion.section>
   );
 }

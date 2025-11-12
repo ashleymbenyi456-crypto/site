@@ -1,7 +1,8 @@
+"use client";
+
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -13,6 +14,7 @@ import {
   MousePointerClick,
   BarChart,
 } from "lucide-react";
+import { motion } from "framer-motion";
 
 const services = [
   {
@@ -48,32 +50,84 @@ const services = [
 ];
 
 export function Services() {
+  const sectionVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.5 } },
+  };
+
+  const listVariants = {
+    visible: {
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
+  
   return (
-    <section id="services" className="w-full py-20 md:py-28 lg:py-32 bg-secondary/50">
+    <motion.section 
+      id="services" 
+      className="w-full py-20 md:py-28 lg:py-32 bg-secondary/50"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={sectionVariants}
+    >
       <div className="container mx-auto max-w-7xl px-4 md:px-6">
         <div className="mb-16 text-center">
-          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline text-primary">
+          <motion.h2 
+            className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline text-primary"
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.5 }}
+          >
             Our Digital Marketing Services
-          </h2>
-          <p className="mt-4 max-w-3xl mx-auto text-muted-foreground md:text-xl">
+          </motion.h2>
+          <motion.p 
+            className="mt-4 max-w-3xl mx-auto text-muted-foreground md:text-xl"
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
             A complete suite of services to help your business grow and succeed
             in the digital world.
-          </p>
+          </motion.p>
         </div>
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <motion.div 
+          className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
+          variants={listVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+        >
           {services.map((service) => (
-            <Card key={service.title} className="bg-background/80 border-border/60 hover:border-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-              <CardHeader className="flex flex-row items-center gap-4">
-                {service.icon}
-                <CardTitle className="font-headline text-xl">{service.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">{service.description}</p>
-              </CardContent>
-            </Card>
+            <motion.div key={service.title} variants={itemVariants}>
+              <Card className="bg-background/80 border-border/60 hover:border-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full">
+                <CardHeader className="flex flex-row items-center gap-4">
+                  {service.icon}
+                  <CardTitle className="font-headline text-xl">{service.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">{service.description}</p>
+                </CardContent>
+              </Card>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }
