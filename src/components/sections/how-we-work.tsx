@@ -69,7 +69,7 @@ export function HowWeWork() {
       <div className="container mx-auto max-w-7xl px-4 md:px-6">
         <div className="mb-12 md:mb-16 text-center">
           <motion.div
-            className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm font-medium text-secondary-foreground mb-4"
+            className="inline-block rounded-full bg-secondary px-4 py-1.5 text-sm font-medium text-secondary-foreground mb-4"
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.5 }}
@@ -98,23 +98,27 @@ export function HowWeWork() {
         </div>
 
         <motion.div
-          className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-5"
+          className="relative grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-5"
           variants={listVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
         >
-          {processSteps.map((step) => (
-            <motion.div key={step.title} variants={itemVariants}>
-              <Card className="h-full text-center bg-background/50 hover:bg-card hover:shadow-lg transition-all duration-300">
+           <div className="absolute top-1/2 left-0 w-full h-px bg-border -translate-y-1/2 hidden lg:block" />
+          {processSteps.map((step, i) => (
+            <motion.div key={step.title} variants={itemVariants} className="relative">
+               <div className="absolute -top-3 left-1/2 w-px h-[calc(50%-1.5rem)] bg-border -translate-x-1/2 hidden lg:block" />
+              <Card className="h-full text-center bg-background hover:bg-card hover:shadow-lg transition-all duration-300 border-2 border-transparent hover:border-accent/50 group">
                 <CardHeader className="items-center">
-                    <div className="p-4 bg-secondary rounded-full mb-4 inline-flex">
+                    <div className="p-4 bg-secondary rounded-full mb-4 inline-flex border-2 border-transparent group-hover:border-accent/30 group-hover:bg-accent/10 transition-all duration-300">
                         <step.icon className="h-7 w-7 text-accent" />
                     </div>
                   <CardTitle className="font-headline text-lg text-primary">{step.title}</CardTitle>
                 </CardHeader>
                 <CardDescription className="px-6 pb-6 text-sm">{step.description}</CardDescription>
               </Card>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-background border-2 border-border hidden lg:flex items-center justify-center" />
+               <div className="absolute top-1/2 left-1/2 w-px h-[calc(50%-1.5rem)] bg-border -translate-x-1/2 hidden lg:block" />
             </motion.div>
           ))}
         </motion.div>

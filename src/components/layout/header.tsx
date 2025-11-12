@@ -40,8 +40,8 @@ export function Header() {
   
   return (
     <header className={cn(
-      "sticky top-0 z-50 w-full border-b border-transparent transition-all duration-300",
-      isScrolled ? "border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60" : "bg-transparent"
+      "sticky top-0 z-50 w-full border-b backdrop-blur-sm transition-colors duration-300",
+      isScrolled ? "border-border/40 bg-background/80" : "border-transparent bg-transparent"
     )}>
       <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2" prefetch={false}>
@@ -53,7 +53,7 @@ export function Header() {
             <Link
               key={item.label}
               href={item.href}
-              className="transition-colors hover:text-accent"
+              className="text-foreground/70 transition-colors hover:text-accent"
               prefetch={false}
             >
               {item.label}
@@ -64,7 +64,7 @@ export function Header() {
           <ThemeToggle />
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
-              <Button variant="outline" size="icon" className="md:hidden">
+              <Button variant="ghost" size="icon" className="md:hidden">
                 <MenuIcon className="h-6 w-6" />
                 <span className="sr-only">Toggle navigation menu</span>
               </Button>

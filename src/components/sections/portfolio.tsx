@@ -4,13 +4,12 @@ import Image from "next/image";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -53,6 +52,8 @@ function PortfolioCard({ item }: { item: typeof portfolioItems[0] }) {
   return (
     <div
       className="perspective-1000 w-full h-[450px]"
+      onMouseEnter={() => setIsFlipped(true)}
+      onMouseLeave={() => setIsFlipped(false)}
       onClick={() => setIsFlipped(!isFlipped)}
     >
       <motion.div
@@ -70,8 +71,8 @@ function PortfolioCard({ item }: { item: typeof portfolioItems[0] }) {
             "cursor-pointer"
           )}
         >
-          <Card className="overflow-hidden group transition-all duration-300 hover:shadow-xl h-full flex flex-col">
-            <div className="overflow-hidden relative h-1/2">
+          <Card className="overflow-hidden group transition-all duration-300 shadow-sm hover:shadow-xl h-full flex flex-col">
+            <div className="overflow-hidden relative h-full">
               {image && (
                 <Image
                   src={image.imageUrl}
@@ -81,16 +82,13 @@ function PortfolioCard({ item }: { item: typeof portfolioItems[0] }) {
                   data-ai-hint={image.imageHint}
                 />
               )}
+               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+               <div className="absolute bottom-0 left-0 p-6">
+                <CardTitle className="font-headline text-xl text-white">
+                  {item.title}
+                </CardTitle>
+              </div>
             </div>
-            <CardHeader className="flex-grow">
-              <CardDescription>Client: {item.client}</CardDescription>
-              <CardTitle className="font-headline text-xl text-primary">
-                {item.title}
-              </CardTitle>
-            </CardHeader>
-             <CardContent>
-                <Badge variant="outline">Click to see details</Badge>
-            </CardContent>
           </Card>
         </motion.div>
 
@@ -102,13 +100,13 @@ function PortfolioCard({ item }: { item: typeof portfolioItems[0] }) {
           )}
           style={{ transform: "rotateY(180deg)" }}
         >
-          <Card className="h-full flex flex-col bg-secondary/80">
-            <CardHeader>
-              <CardTitle className="font-headline text-xl text-primary">
-                {item.title}
+          <Card className="h-full flex flex-col bg-secondary/80 p-6">
+            <CardHeader className="p-0">
+              <CardTitle className="font-headline text-xl text-primary mb-2">
+                {item.client}
               </CardTitle>
             </CardHeader>
-            <CardContent className="flex flex-col flex-grow">
+            <CardContent className="flex flex-col flex-grow p-0 mt-4">
               <p className="text-muted-foreground mb-4 flex-grow">
                 {item.description}
               </p>
@@ -160,7 +158,7 @@ export function Portfolio() {
       className="w-full py-20 md:py-28"
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
+      viewport={{ once: true, amount: 0.1 }}
       variants={sectionVariants}
     >
       <div className="container mx-auto max-w-7xl px-4 md:px-6">
@@ -190,7 +188,7 @@ export function Portfolio() {
           variants={listVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.1 }}
         >
           {portfolioItems.map((item) => (
              <motion.div key={item.id} variants={itemVariants}>

@@ -121,6 +121,8 @@ function ServiceCard({ service }: { service: typeof services[0] }) {
   return (
     <div
       className="perspective-1000 w-full h-[550px] md:h-[500px]"
+      onMouseEnter={() => setIsFlipped(true)}
+      onMouseLeave={() => setIsFlipped(false)}
       onClick={() => setIsFlipped(!isFlipped)}
     >
       <motion.div
@@ -138,8 +140,8 @@ function ServiceCard({ service }: { service: typeof services[0] }) {
             "cursor-pointer"
           )}
         >
-          <Card className="h-full flex flex-col items-center justify-center text-center p-6 bg-secondary/50 group hover:shadow-xl transition-shadow duration-300">
-            <div className="w-20 h-20 bg-background rounded-full flex items-center justify-center mb-6 border-2 border-border group-hover:border-accent transition-colors duration-300">
+          <Card className="h-full flex flex-col items-center justify-center text-center p-6 bg-card group hover:shadow-xl transition-shadow duration-300 border-2 border-transparent hover:border-accent/50">
+            <div className="w-20 h-20 bg-secondary rounded-full flex items-center justify-center mb-6 border-2 border-border group-hover:border-accent/30 group-hover:bg-accent/10 transition-all duration-300">
               <Icon className="h-10 w-10 text-accent" />
             </div>
             <CardTitle className="font-headline text-2xl text-primary mb-2">
@@ -160,7 +162,7 @@ function ServiceCard({ service }: { service: typeof services[0] }) {
           )}
           style={{ transform: "rotateY(180deg)" }}
         >
-          <Card className="h-full flex flex-col bg-secondary/80 p-6" onClick={(e) => e.stopPropagation()}>
+          <Card className="h-full flex flex-col bg-secondary/70 p-6" onClick={(e) => e.stopPropagation()}>
             <h3 className="text-xl font-bold font-headline text-primary">{service.serviceName}</h3>
             <p className="text-base font-medium text-foreground my-4 leading-relaxed flex-grow">
               {service.valueProposition}
@@ -223,7 +225,7 @@ export function Services() {
   return (
     <motion.section
       id="services"
-      className="w-full py-20 md:py-28 bg-secondary/50"
+      className="w-full py-20 md:py-28 bg-secondary/30"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
