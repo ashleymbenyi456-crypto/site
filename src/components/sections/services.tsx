@@ -120,14 +120,12 @@ export function Services() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const index = serviceRefs.current.indexOf(entry.target as HTMLDivElement);
-            if (index !== -1) {
-              setActiveService(services[index]);
-            }
+            const index = parseInt(entry.target.getAttribute('data-index') || '0', 10);
+            setActiveService(services[index]);
           }
         });
       },
-      { threshold: 0.5 }
+      { rootMargin: "-50% 0px -50% 0px" }
     );
 
     const currentRefs = serviceRefs.current;
@@ -194,6 +192,7 @@ export function Services() {
               <motion.div 
                 key={service.title}
                 ref={el => serviceRefs.current[index] = el}
+                data-index={index}
                 className="flex flex-col items-center text-center"
                 initial="hidden"
                 whileInView="visible"
