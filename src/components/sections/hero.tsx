@@ -31,7 +31,7 @@ export function Hero() {
 
   return (
     <motion.section
-      className="w-full py-24 md:py-32 lg:py-40"
+      className="w-full pt-32 pb-24 md:pt-40 md:pb-32 lg:pt-48 lg:pb-40"
       initial="hidden"
       animate="visible"
       variants={containerVariants}

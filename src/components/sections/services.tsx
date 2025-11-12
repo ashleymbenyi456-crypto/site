@@ -18,32 +18,32 @@ import { motion } from "framer-motion";
 
 const services = [
   {
-    icon: <Search className="h-8 w-8 text-accent" />,
+    icon: Search,
     title: "Search Engine Optimization",
     description: "Boost your visibility on search engines and attract high-quality organic traffic with our proven optimization strategies.",
   },
   {
-    icon: <Megaphone className="h-8 w-8 text-accent" />,
+    icon: Megaphone,
     title: "Social Media Marketing",
     description: "Engage your audience, build brand loyalty, and drive conversions through targeted social media campaigns.",
   },
   {
-    icon: <PenTool className="h-8 w-8 text-accent" />,
+    icon: PenTool,
     title: "Content Creation",
     description: "From blog posts to videos, we create compelling content that resonates with your audience and establishes you as an industry leader.",
   },
   {
-    icon: <Mail className="h-8 w-8 text-accent" />,
+    icon: Mail,
     title: "Email Marketing",
     description: "Nurture leads and retain customers with personalized email campaigns that deliver value directly to their inboxes.",
   },
   {
-    icon: <MousePointerClick className="h-8 w-8 text-accent" />,
+    icon: MousePointerClick,
     title: "PPC Advertising",
     description: "Get instant, targeted traffic and maximize your ROI with our expertly managed pay-per-click advertising campaigns.",
   },
   {
-    icon: <BarChart className="h-8 w-8 text-accent" />,
+    icon: BarChart,
     title: "Analytics & Reporting",
     description: "Make data-driven decisions with comprehensive analytics and clear, actionable reports on your marketing performance.",
   },
@@ -113,19 +113,23 @@ export function Services() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
         >
-          {services.map((service) => (
+          {services.map((service) => {
+            const Icon = service.icon;
+            return (
             <motion.div key={service.title} variants={itemVariants}>
-              <Card className="bg-background/80 border-border/60 hover:border-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full">
+              <Card className="bg-background/80 border-border/60 hover:border-accent transition-all duration-300 hover:shadow-xl hover:-translate-y-2 group h-full">
                 <CardHeader className="flex flex-row items-start gap-4">
-                  {service.icon}
-                  <CardTitle className="font-headline text-xl text-primary mt-1">{service.title}</CardTitle>
+                  <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center">
+                    <Icon className="h-6 w-6 text-accent transition-transform duration-300 group-hover:scale-110" />
+                  </div>
+                  <CardTitle className="font-headline text-xl text-primary mt-2">{service.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground text-sm">{service.description}</p>
                 </CardContent>
               </Card>
             </motion.div>
-          ))}
+          )})}
         </motion.div>
       </div>
     </motion.section>
