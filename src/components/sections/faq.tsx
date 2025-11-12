@@ -1,3 +1,4 @@
+
 "use client";
 
 import { motion } from "framer-motion";
@@ -45,7 +46,7 @@ export function Faq() {
   return (
     <motion.section
       id="faq"
-      className="w-full py-20 md:py-28 bg-secondary/50"
+      className="w-full py-20 md:py-28 bg-secondary/30"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
@@ -53,12 +54,21 @@ export function Faq() {
     >
       <div className="container mx-auto max-w-4xl px-4 md:px-6">
         <div className="mb-12 md:mb-16 text-center">
+          <motion.div
+            className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm font-medium text-secondary-foreground mb-4"
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.5 }}
+          >
+            Any Questions?
+          </motion.div>
           <motion.h2
             className="text-3xl font-bold tracking-tight sm:text-4xl font-headline text-primary"
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
           >
             Frequently Asked Questions
           </motion.h2>
@@ -67,9 +77,9 @@ export function Faq() {
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Have questions? We've got answers. Here are some of the most common inquiries we receive.
+            Can't find the answer you're looking for? Reach out to our team.
           </motion.p>
         </div>
         <Accordion type="single" collapsible className="w-full">
@@ -81,11 +91,11 @@ export function Faq() {
                 viewport={{ once: true, amount: 0.5 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
              >
-                <AccordionItem value={`item-${index}`} className="bg-background rounded-lg mb-4 shadow-sm border px-6">
+                <AccordionItem value={`item-${index}`} className="bg-background rounded-lg mb-4 shadow-sm border px-6 transition-all duration-300 hover:shadow-md hover:border-accent/50">
                 <AccordionTrigger className="text-left font-semibold text-base hover:no-underline">
                     {item.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground pt-2">
+                <AccordionContent className="text-muted-foreground pt-2 text-base">
                     {item.answer}
                 </AccordionContent>
                 </AccordionItem>

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useActionState, useEffect, useRef } from "react";
@@ -118,8 +119,8 @@ export function Contact() {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <form ref={formRef} action={formAction} className="space-y-4">
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <form ref={formRef} action={formAction} className="space-y-6">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="name">Name</Label>
                   <Input id="name" name="name" placeholder="Your Name" required />
