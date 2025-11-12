@@ -156,7 +156,7 @@ export function Services() {
   return (
     <motion.section
       id="services"
-      className="w-full py-20 md:py-28 bg-secondary/30"
+      className="w-full py-20 md:py-28 bg-frost"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}

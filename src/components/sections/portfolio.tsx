@@ -109,7 +109,7 @@ export function Portfolio() {
   return (
     <motion.section
       id="portfolio"
-      className="w-full py-20 md:py-28"
+      className="w-full py-20 md:py-28 bg-frost"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}

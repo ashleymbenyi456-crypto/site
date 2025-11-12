@@ -62,7 +62,7 @@ export function About() {
   return (
     <motion.section
       id="about"
-      className="w-full py-20 md:py-28 bg-secondary/50"
+      className="w-full py-20 md:py-28 bg-frost"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}

@@ -79,7 +79,7 @@ export function Contact() {
   return (
     <motion.section
       id="contact"
-      className="w-full py-20 md:py-28"
+      className="w-full py-20 md:py-28 bg-frost"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}

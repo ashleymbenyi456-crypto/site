@@ -41,6 +41,10 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div className="relative flex min-h-dvh flex-col bg-background">
+             <div
+              aria-hidden="true"
+              className="fixed inset-0 animated-gradient bg-gradient-to-br from-primary/10 via-background to-accent/10 dark:from-primary/20 dark:via-background dark:to-accent/20 -z-10"
+            />
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />

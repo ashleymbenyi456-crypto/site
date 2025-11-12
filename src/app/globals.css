@@ -78,6 +78,14 @@
     background-size: 200% 200%;
     animation: gradient-animation 10s ease infinite;
   }
+  
+  .bg-frost {
+    @apply bg-background/70 backdrop-blur-lg;
+  }
+  
+  .dark .bg-frost {
+    @apply bg-background/50;
+  }
 
   @keyframes gradient-animation {
     0% {
