@@ -11,6 +11,7 @@ import {
   BarChart,
   CheckCircle2,
   ArrowRight,
+  X,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
@@ -18,9 +19,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ServiceRequestForm } from "./service-request-form";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-
+import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
 const services = [
   {
@@ -109,92 +108,34 @@ const services = [
   },
 ];
 
+type Service = (typeof services)[0];
 
-function ServiceCard({ service, onHover }: { service: typeof services[0], onHover: (icon: React.ElementType) => void }) {
-  const [isFlipped, setIsFlipped] = useState(false);
-  const Icon = service.icon;
-
-  const flipVariants = {
-    front: { rotateY: 0 },
-    back: { rotateY: 180 },
-  };
-
+function ServiceCard({ service, onHover, onClick, isSelected }: { service: Service; onHover: (icon: React.ElementType) => void; onClick: (service: Service) => void; isSelected: boolean; }) {
   return (
-    <div
-      className="perspective-1000 w-full h-[320px] md:h-[350px]"
-      onMouseEnter={() => onHover(Icon)}
-      onClick={() => setIsFlipped(!isFlipped)}
+    <motion.div
+      layout
+      className="w-full h-[250px] md:h-[300px]"
+      onMouseEnter={() => onHover(service.icon)}
+      onClick={() => onClick(service)}
     >
-      <motion.div
-        className="relative w-full h-full"
-        style={{ transformStyle: "preserve-3d" }}
-        initial={false}
-        animate={isFlipped ? "back" : "front"}
-        variants={flipVariants}
-        transition={{ duration: 0.6, ease: "easeInOut" }}
-      >
-        {/* Front of the card */}
-        <motion.div
-          className={cn(
-            "absolute w-full h-full backface-hidden",
-            "cursor-pointer"
-          )}
-        >
-          <Card className="h-full flex flex-col items-center justify-center text-center p-6 bg-card group hover:shadow-xl transition-shadow duration-300 border-2 border-transparent hover:border-accent/50">
-            <CardTitle className="font-headline text-2xl text-primary mb-2">
-              {service.title}
-            </CardTitle>
-            <CardDescription className="text-muted-foreground mb-6">
-              {service.description}
-            </CardDescription>
-            <Badge variant="outline">Click to see details</Badge>
-          </Card>
-        </motion.div>
-
-        {/* Back of the card */}
-        <motion.div
-          className={cn(
-            "absolute w-full h-full backface-hidden",
-            "cursor-pointer"
-          )}
-          style={{ transform: "rotateY(180deg)" }}
-        >
-          <Card className="h-full flex flex-col bg-secondary/70 p-6" onClick={(e) => e.stopPropagation()}>
-            <h3 className="text-xl font-bold font-headline text-primary">{service.serviceName}</h3>
-            <p className="text-base font-medium text-foreground my-4 leading-relaxed flex-grow">
-              {service.valueProposition}
-            </p>
-            <div>
-              <h4 className="text-md font-semibold text-primary mb-3">What to Expect:</h4>
-              <ul className="space-y-2 text-muted-foreground text-sm flex-grow">
-                {service.customerExpectations.map((item, index) => (
-                  <li key={index} className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-accent shrink-0 mt-0.5" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-             <Sheet>
-              <SheetTrigger asChild>
-                <Button size="sm" className="mt-6 bg-accent text-accent-foreground hover:bg-accent/90 w-full">
-                  Request Service <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent>
-                <ServiceRequestForm serviceName={service.serviceName} />
-              </SheetContent>
-            </Sheet>
-          </Card>
-        </motion.div>
-      </motion.div>
-    </div>
+      <Card className={cn(
+        "cursor-pointer h-full flex flex-col items-center justify-center text-center p-6 bg-card group hover:shadow-xl transition-all duration-300 border-2",
+        isSelected ? "border-accent/80 shadow-xl" : "border-transparent hover:border-accent/50"
+      )}>
+        <CardTitle className="font-headline text-2xl text-primary mb-2">
+          {service.title}
+        </CardTitle>
+        <CardDescription className="text-muted-foreground">
+          {service.description}
+        </CardDescription>
+      </Card>
+    </motion.div>
   );
 }
 
-
 export function Services() {
-  const [activeIcon, setActiveIcon] = useState(services[0].icon);
+  const [hoveredIcon, setHoveredIcon] = useState<React.ElementType>(() => services[0].icon);
+  const [selectedService, setSelectedService] = useState<Service | null>(null);
 
   const sectionVariants = {
     hidden: { opacity: 0 },
@@ -203,26 +144,19 @@ export function Services() {
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut",
-      },
-    },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" } },
   };
 
-  const gridItems = [
-    services[0],
-    services[1],
-    null, // Placeholder for center element
-    services[2],
-    services[3],
-    services[4],
-    null, // Placeholder for center element
-    services[5]
-  ];
+  const handleSelectService = (service: Service) => {
+    setSelectedService(service);
+    setHoveredIcon(service.icon);
+  };
+
+  const handleClose = () => {
+    setSelectedService(null);
+  };
+
+  const ActiveIcon = selectedService?.icon || hoveredIcon;
 
   return (
     <motion.section
@@ -235,92 +169,143 @@ export function Services() {
     >
       <div className="container mx-auto max-w-7xl px-4 md:px-6">
         <div className="mb-12 md:mb-16 text-center">
-            <motion.h2
-              className="text-3xl font-bold tracking-tight sm:text-4xl font-headline text-primary"
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true, amount: 0.5 }}
-              transition={{ duration: 0.5 }}
-            >
-              How We Can Help You Grow
-            </motion.h2>
-            <motion.p
-              className="mt-4 max-w-3xl mx-auto text-muted-foreground md:text-lg"
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true, amount: 0.5 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              Our suite of digital marketing services is designed to deliver measurable results and turn your vision into reality.
-            </motion.p>
+          <motion.h2
+            className="text-3xl font-bold tracking-tight sm:text-4xl font-headline text-primary"
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.5 }}
+          >
+            How We Can Help You Grow
+          </motion.h2>
+          <motion.p
+            className="mt-4 max-w-3xl mx-auto text-muted-foreground md:text-lg"
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            Our suite of digital marketing services is designed to deliver measurable results and turn your vision into reality.
+          </motion.p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 items-center">
-          {/* Service cards on the left */}
-          <div className="lg:col-span-1 flex flex-col gap-8">
-            <motion.div variants={itemVariants}>
-              <ServiceCard service={services[0]} onHover={setActiveIcon} />
-            </motion.div>
-            <motion.div variants={itemVariants}>
-              <ServiceCard service={services[1]} onHover={setActiveIcon} />
-            </motion.div>
-          </div>
-          
-          {/* Centerpiece */}
-          <motion.div 
-            className="lg:col-span-2 hidden lg:flex justify-center items-center h-full"
-            initial={{ scale: 0.8, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.3, ease: 'easeOut' }}
-            viewport={{ once: true, amount: 0.5 }}
-          >
-            <div className="relative w-80 h-80 rounded-full flex items-center justify-center bg-background/50 shadow-2xl">
-               <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full" />
-               <div className="absolute inset-5 bg-background rounded-full" />
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeIcon.displayName}
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.5 }}
-                  transition={{ duration: 0.2 }}
-                  className="relative z-10"
-                >
-                  {activeIcon &&
-                    React.createElement(activeIcon, {
-                      className: "h-32 w-32 text-accent",
-                    })}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          </motion.div>
+          <AnimatePresence>
+            {!selectedService && (
+              <>
+                <div className="lg:col-span-1 flex flex-col gap-8">
+                  <motion.div variants={itemVariants} exit={{ opacity: 0, y: 20 }}>
+                    <ServiceCard service={services[0]} onHover={setHoveredIcon} onClick={handleSelectService} isSelected={selectedService?.id === services[0].id}/>
+                  </motion.div>
+                  <motion.div variants={itemVariants} exit={{ opacity: 0, y: 20 }}>
+                    <ServiceCard service={services[1]} onHover={setHoveredIcon} onClick={handleSelectService} isSelected={selectedService?.id === services[1].id} />
+                  </motion.div>
+                </div>
 
-           {/* Service cards on the right */}
-           <div className="lg:col-span-1 flex flex-col gap-8">
-            <motion.div variants={itemVariants}>
-              <ServiceCard service={services[2]} onHover={setActiveIcon} />
-            </motion.div>
-            <motion.div variants={itemVariants}>
-              <ServiceCard service={services[3]} onHover={setActiveIcon} />
-            </motion.div>
-          </div>
+                <div className="lg:col-span-2 hidden lg:flex justify-center items-center h-full">
+                  <motion.div
+                    layoutId="service-card"
+                    className="relative w-80 h-80 rounded-full flex items-center justify-center bg-background/50 shadow-2xl"
+                    transition={{ duration: 0.4, ease: 'easeOut' }}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full" />
+                    <div className="absolute inset-5 bg-background rounded-full" />
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={hoveredIcon.displayName}
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.5 }}
+                        transition={{ duration: 0.2 }}
+                        className="relative z-10"
+                      >
+                        {React.createElement(hoveredIcon, { className: "h-32 w-32 text-accent" })}
+                      </motion.div>
+                    </AnimatePresence>
+                  </motion.div>
+                </div>
+
+                <div className="lg:col-span-1 flex flex-col gap-8">
+                  <motion.div variants={itemVariants} exit={{ opacity: 0, y: 20 }}>
+                    <ServiceCard service={services[2]} onHover={setHoveredIcon} onClick={handleSelectService} isSelected={selectedService?.id === services[2].id} />
+                  </motion.div>
+                  <motion.div variants={itemVariants} exit={{ opacity: 0, y: 20 }}>
+                    <ServiceCard service={services[3]} onHover={setHoveredIcon} onClick={handleSelectService} isSelected={selectedService?.id === services[3].id} />
+                  </motion.div>
+                </div>
+                
+                <div className="md:col-start-1 lg:col-start-2">
+                  <motion.div variants={itemVariants} exit={{ opacity: 0, y: 20 }}>
+                    <ServiceCard service={services[4]} onHover={setHoveredIcon} onClick={handleSelectService} isSelected={selectedService?.id === services[4].id} />
+                  </motion.div>
+                </div>
+                <div className="md:col-start-2 lg:col-start-3">
+                  <motion.div variants={itemVariants} exit={{ opacity: 0, y: 20 }}>
+                    <ServiceCard service={services[5]} onHover={setHoveredIcon} onClick={handleSelectService} isSelected={selectedService?.id === services[5].id} />
+                  </motion.div>
+                </div>
+              </>
+            )}
+          </AnimatePresence>
+
+          <AnimatePresence>
+            {selectedService && (
+              <motion.div className="col-span-1 md:col-span-2 lg:col-span-4 flex justify-center items-center p-4">
+                  <motion.div
+                    layoutId="service-card"
+                    className="relative w-full max-w-4xl min-h-[500px] rounded-2xl bg-background shadow-2xl p-8 md:p-12"
+                    transition={{ duration: 0.4, ease: 'easeOut' }}
+                    style={{ overflow: 'hidden' }}
+                  >
+                      <motion.button 
+                        onClick={handleClose} 
+                        className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1, transition: { delay: 0.3 } }}
+                      >
+                        <X className="h-6 w-6" />
+                      </motion.button>
+                     <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1, transition: { delay: 0.3 } }}
+                        className="flex flex-col md:flex-row gap-8 md:gap-12 h-full"
+                      >
+                        <div className="flex-shrink-0 flex flex-col items-center text-center md:text-left md:items-start">
+                          <div className="p-4 bg-secondary rounded-full mb-4 inline-flex border-2 border-accent/30 bg-accent/10">
+                            <ActiveIcon className="h-12 w-12 text-accent" />
+                          </div>
+                          <h2 className="text-3xl font-bold font-headline text-primary">{selectedService.serviceName}</h2>
+                          <p className="text-lg text-muted-foreground mt-2">{selectedService.valueProposition}</p>
+                           <Sheet>
+                            <SheetTrigger asChild>
+                              <Button size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90 w-full md:w-auto">
+                                Request Service <ArrowRight className="ml-2 h-4 w-4" />
+                              </Button>
+                            </SheetTrigger>
+                            <SheetContent>
+                              <ServiceRequestForm serviceName={selectedService.serviceName} />
+                            </SheetContent>
+                          </Sheet>
+                        </div>
+
+                        <div className="border-t md:border-t-0 md:border-l border-border mt-6 md:mt-0 md:pl-12 pt-6 md:pt-0">
+                          <h4 className="text-xl font-semibold text-primary mb-4">What to Expect:</h4>
+                          <ul className="space-y-3 text-muted-foreground text-base">
+                            {selectedService.customerExpectations.map((item, index) => (
+                              <li key={index} className="flex items-start gap-3">
+                                <CheckCircle2 className="h-5 w-5 text-accent shrink-0 mt-1" />
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                     </motion.div>
+                  </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-         {/* Bottom row of service cards for all screen sizes */}
-         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 items-center mt-8">
-            <div className="lg:col-start-2">
-                <motion.div variants={itemVariants}>
-                    <ServiceCard service={services[4]} onHover={setActiveIcon} />
-                </motion.div>
-            </div>
-             <div >
-                <motion.div variants={itemVariants}>
-                    <ServiceCard service={services[5]} onHover={setActiveIcon} />
-                </motion.div>
-            </div>
-         </div>
       </div>
     </motion.section>
   );
 }
-
-    
