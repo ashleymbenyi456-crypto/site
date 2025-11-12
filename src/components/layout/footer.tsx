@@ -1,4 +1,4 @@
-import { MountainIcon, TwitterIcon, LinkedinIcon, InstagramIcon } from "lucide-react";
+import { TwitterIcon, LinkedinIcon, InstagramIcon } from "lucide-react";
 import Link from "next/link";
 
 export function Footer() {
@@ -7,7 +7,7 @@ export function Footer() {
       <div className="container mx-auto max-w-7xl py-12 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
           <div className="flex items-center gap-3">
-            <MountainIcon className="h-6 w-6 text-primary" />
+            
             <span className="text-lg font-semibold font-headline text-primary">Global Leap Marketing</span>
           </div>
           <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} Global Leap Marketing. All rights reserved.</p>

@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { MountainIcon, MenuIcon } from "lucide-react";
+import { MenuIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -30,6 +30,7 @@ export function Header() {
   const navItems = [
     { href: "#services", label: "Services" },
     { href: "#portfolio", label: "Portfolio" },
+    { href: "#about", label: "About" },
     { href: "#contact", label: "Contact" },
   ];
 
@@ -44,7 +45,7 @@ export function Header() {
     )}>
       <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2" prefetch={false}>
-          <MountainIcon className="h-6 w-6 text-primary" />
+          
           <span className="text-lg font-semibold font-headline text-primary">Global Leap</span>
         </Link>
         <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
@@ -71,7 +72,7 @@ export function Header() {
             <SheetContent side="right">
               <div className="grid gap-6 p-6">
                   <Link href="/" className="flex items-center gap-2" prefetch={false} onClick={handleLinkClick}>
-                      <MountainIcon className="h-6 w-6 text-primary" />
+                      
                       <span className="text-lg font-bold text-primary">Global Leap</span>
                   </Link>
                   <nav className="grid gap-4">
