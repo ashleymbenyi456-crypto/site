@@ -9,6 +9,7 @@ import {
   SheetContent,
 } from "@/components/ui/sheet";
 import { useState } from "react";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export function Header() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -43,35 +44,38 @@ export function Header() {
             </Link>
           ))}
         </nav>
-        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-          <SheetTrigger asChild>
-            <Button variant="outline" size="icon" className="md:hidden">
-              <MenuIcon className="h-6 w-6" />
-              <span className="sr-only">Toggle navigation menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="right">
-            <div className="grid gap-6 p-6">
-                <Link href="/" className="flex items-center gap-2" prefetch={false} onClick={handleLinkClick}>
-                    <MountainIcon className="h-6 w-6 text-primary" />
-                    <span className="text-lg font-bold">Global Leap</span>
-                </Link>
-                <nav className="grid gap-4">
-                {navItems.map((item) => (
-                    <Link
-                    key={item.label}
-                    href={item.href}
-                    className="py-2 text-lg font-medium transition-colors hover:text-primary"
-                    prefetch={false}
-                    onClick={handleLinkClick}
-                    >
-                    {item.label}
-                    </Link>
-                ))}
-                </nav>
-            </div>
-          </SheetContent>
-        </Sheet>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="icon" className="md:hidden">
+                <MenuIcon className="h-6 w-6" />
+                <span className="sr-only">Toggle navigation menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right">
+              <div className="grid gap-6 p-6">
+                  <Link href="/" className="flex items-center gap-2" prefetch={false} onClick={handleLinkClick}>
+                      <MountainIcon className="h-6 w-6 text-primary" />
+                      <span className="text-lg font-bold">Global Leap</span>
+                  </Link>
+                  <nav className="grid gap-4">
+                  {navItems.map((item) => (
+                      <Link
+                      key={item.label}
+                      href={item.href}
+                      className="py-2 text-lg font-medium transition-colors hover:text-primary"
+                      prefetch={false}
+                      onClick={handleLinkClick}
+                      >
+                      {item.label}
+                      </Link>
+                  ))}
+                  </nav>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
     </header>
   );
