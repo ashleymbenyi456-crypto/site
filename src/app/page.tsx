@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <About />
+      {/* <About /> */}
       <Services />
       <Portfolio />
       <Contact />
