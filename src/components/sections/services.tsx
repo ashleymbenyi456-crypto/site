@@ -110,24 +110,25 @@ const services = [
 
 type Service = (typeof services)[0];
 
-function ServiceCard({ service, onHover, onClick, isSelected }: { service: Service; onHover: (icon: React.ElementType) => void; onClick: (service: Service) => void; isSelected: boolean; }) {
+function ServiceCard({ service, onHover, onClick }: { service: Service; onHover: (icon: React.ElementType) => void; onClick: (service: Service) => void; }) {
   return (
     <motion.div
-      layout
       className="w-full h-[250px] md:h-[300px]"
       onMouseEnter={() => onHover(service.icon)}
       onClick={() => onClick(service)}
+      variants={{
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0 }
+      }}
     >
-      <Card className={cn(
-        "cursor-pointer h-full flex flex-col items-center justify-center text-center p-6 bg-card group hover:shadow-xl transition-all duration-300 border-2",
-        isSelected ? "border-accent/80 shadow-xl" : "border-transparent hover:border-accent/50"
-      )}>
-        <CardTitle className="font-headline text-2xl text-primary mb-2">
-          {service.title}
-        </CardTitle>
-        <CardDescription className="text-muted-foreground">
-          {service.description}
-        </CardDescription>
+      <Card className="cursor-pointer h-full flex flex-col items-center justify-center text-center p-6 bg-card group hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-accent/50">
+        <CardHeader className="p-0 items-center">
+            <div className="p-4 bg-secondary rounded-full mb-4 inline-flex border-2 border-transparent group-hover:border-accent/30 group-hover:bg-accent/10 transition-all duration-300">
+                <service.icon className="h-7 w-7 text-accent" />
+            </div>
+          <CardTitle className="font-headline text-xl text-primary">{service.title}</CardTitle>
+        </CardHeader>
+        <CardDescription className="px-6 pb-6 text-sm">{service.description}</CardDescription>
       </Card>
     </motion.div>
   );
@@ -140,11 +141,6 @@ export function Services() {
   const sectionVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { duration: 0.5 } },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" } },
   };
 
   const handleSelectService = (service: Service) => {
@@ -189,20 +185,35 @@ export function Services() {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 items-center">
+        <motion.div 
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 items-center"
+            initial="hidden"
+            animate="visible"
+            variants={{
+                visible: { transition: { staggerChildren: 0.05 }}
+            }}
+        >
           <AnimatePresence>
             {!selectedService && (
-              <>
+               <motion.div 
+                    key="grid"
+                    className="contents"
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                    variants={{
+                        visible: { transition: { staggerChildren: 0.05 }}
+                    }}
+                >
                 <div className="lg:col-span-1 flex flex-col gap-8">
-                  <motion.div variants={itemVariants} exit={{ opacity: 0, y: 20 }}>
-                    <ServiceCard service={services[0]} onHover={setHoveredIcon} onClick={handleSelectService} isSelected={selectedService?.id === services[0].id}/>
-                  </motion.div>
-                  <motion.div variants={itemVariants} exit={{ opacity: 0, y: 20 }}>
-                    <ServiceCard service={services[1]} onHover={setHoveredIcon} onClick={handleSelectService} isSelected={selectedService?.id === services[1].id} />
-                  </motion.div>
+                  <ServiceCard service={services[0]} onHover={setHoveredIcon} onClick={handleSelectService} />
+                  <ServiceCard service={services[1]} onHover={setHoveredIcon} onClick={handleSelectService} />
                 </div>
 
-                <div className="lg:col-span-2 hidden lg:flex justify-center items-center h-full">
+                <motion.div 
+                    className="lg:col-span-2 hidden lg:flex justify-center items-center h-full"
+                    variants={{ hidden: { opacity: 0, scale: 0.8 }, visible: { opacity: 1, scale: 1 } }}
+                >
                   <motion.div
                     layoutId="service-card"
                     className="relative w-80 h-80 rounded-full flex items-center justify-center bg-background/50 shadow-2xl"
@@ -223,34 +234,29 @@ export function Services() {
                       </motion.div>
                     </AnimatePresence>
                   </motion.div>
-                </div>
+                </motion.div>
 
                 <div className="lg:col-span-1 flex flex-col gap-8">
-                  <motion.div variants={itemVariants} exit={{ opacity: 0, y: 20 }}>
-                    <ServiceCard service={services[2]} onHover={setHoveredIcon} onClick={handleSelectService} isSelected={selectedService?.id === services[2].id} />
-                  </motion.div>
-                  <motion.div variants={itemVariants} exit={{ opacity: 0, y: 20 }}>
-                    <ServiceCard service={services[3]} onHover={setHoveredIcon} onClick={handleSelectService} isSelected={selectedService?.id === services[3].id} />
-                  </motion.div>
+                  <ServiceCard service={services[2]} onHover={setHoveredIcon} onClick={handleSelectService} />
+                  <ServiceCard service={services[3]} onHover={setHoveredIcon} onClick={handleSelectService} />
                 </div>
                 
                 <div className="md:col-start-1 lg:col-start-2">
-                  <motion.div variants={itemVariants} exit={{ opacity: 0, y: 20 }}>
-                    <ServiceCard service={services[4]} onHover={setHoveredIcon} onClick={handleSelectService} isSelected={selectedService?.id === services[4].id} />
-                  </motion.div>
+                   <ServiceCard service={services[4]} onHover={setHoveredIcon} onClick={handleSelectService} />
                 </div>
                 <div className="md:col-start-2 lg:col-start-3">
-                  <motion.div variants={itemVariants} exit={{ opacity: 0, y: 20 }}>
-                    <ServiceCard service={services[5]} onHover={setHoveredIcon} onClick={handleSelectService} isSelected={selectedService?.id === services[5].id} />
-                  </motion.div>
+                    <ServiceCard service={services[5]} onHover={setHoveredIcon} onClick={handleSelectService} />
                 </div>
-              </>
+              </motion.div>
             )}
           </AnimatePresence>
 
           <AnimatePresence>
             {selectedService && (
-              <motion.div className="col-span-1 md:col-span-2 lg:col-span-4 flex justify-center items-center p-4">
+              <motion.div 
+                key="detail"
+                className="col-span-1 md:col-span-2 lg:col-span-4 flex justify-center items-center p-4"
+              >
                   <motion.div
                     layoutId="service-card"
                     className="relative w-full max-w-4xl min-h-[500px] rounded-2xl bg-background shadow-2xl p-8 md:p-12"
@@ -259,15 +265,17 @@ export function Services() {
                   >
                       <motion.button 
                         onClick={handleClose} 
-                        className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors"
+                        className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors z-20"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1, transition: { delay: 0.3 } }}
+                        exit={{ opacity: 0 }}
                       >
                         <X className="h-6 w-6" />
                       </motion.button>
                      <motion.div 
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1, transition: { delay: 0.3 } }}
+                        exit={{ opacity: 0, transition: { duration: 0.2 } }}
                         className="flex flex-col md:flex-row gap-8 md:gap-12 h-full"
                       >
                         <div className="flex-shrink-0 flex flex-col items-center text-center md:text-left md:items-start">
@@ -304,7 +312,7 @@ export function Services() {
               </motion.div>
             )}
           </AnimatePresence>
-        </div>
+        </motion.div>
       </div>
     </motion.section>
   );
