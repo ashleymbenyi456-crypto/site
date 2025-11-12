@@ -11,7 +11,7 @@ import {
   CheckCircle2,
   ArrowRight,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
@@ -108,33 +108,107 @@ const services = [
   },
 ];
 
+function ServiceContent({ service }: { service: typeof services[0] }) {
+  const image = PlaceHolderImages.find(img => img.id === service.id);
+  const Icon = service.icon;
+
+  const contentVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+  };
+
+  return (
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.3 }}
+      variants={contentVariants}
+      className="bg-background/80 p-8 rounded-xl shadow-lg border border-border/60"
+    >
+      <div className="flex items-start md:items-center gap-4 mb-4 flex-col md:flex-row">
+          <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center shrink-0">
+              <Icon className="h-8 w-8 text-accent" />
+          </div>
+          <div>
+              <h3 className="text-2xl font-bold font-headline text-primary">{service.serviceName}</h3>
+              <p className="text-muted-foreground">{service.description}</p>
+          </div>
+      </div>
+
+       {image && (
+        <motion.div 
+          className="relative w-full aspect-video rounded-lg overflow-hidden my-6"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+        >
+          <Image
+            src={image.imageUrl}
+            alt={service.title}
+            fill
+            className="object-cover"
+            data-ai-hint={image.imageHint}
+          />
+        </motion.div>
+      )}
+
+      <p className="text-base font-medium text-foreground my-6 leading-relaxed">{service.valueProposition}</p>
+      
+      <div>
+        <h4 className="text-lg font-semibold text-primary mb-4">What to Expect:</h4>
+        <ul className="space-y-3 text-muted-foreground">
+          {service.customerExpectations.map((item, index) => (
+            <li key={index} className="flex items-start gap-3">
+              <CheckCircle2 className="h-5 w-5 text-accent shrink-0 mt-0.5" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90 w-full md:w-auto">
+            Request Service <ArrowRight className="ml-2 h-5 w-5" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent>
+          <ServiceRequestForm serviceName={service.serviceName} />
+        </SheetContent>
+      </Sheet>
+    </motion.div>
+  )
+}
+
 export function Services() {
-  const [activeService, setActiveService] = useState(services[0]);
+  const [activeServiceId, setActiveServiceId] = useState(services[0].id);
   const isMobile = useIsMobile();
   const serviceRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    if (!isMobile) return;
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const index = parseInt(entry.target.getAttribute('data-index') || '0', 10);
-            setActiveService(services[index]);
+            setActiveServiceId(services[index].id);
           }
         });
       },
-      { rootMargin: "-50% 0px -50% 0px" }
+      { 
+        rootMargin: isMobile ? "-50% 0px -50% 0px" : "-30% 0px -70% 0px",
+      }
     );
 
-    const currentRefs = serviceRefs.current;
-    currentRefs.forEach((ref) => {
+    const refsToObserve = isMobile ? serviceRefs.current : contentRefs.current;
+    
+    refsToObserve.forEach((ref) => {
       if (ref) observer.observe(ref);
     });
 
     return () => {
-      currentRefs.forEach((ref) => {
+      refsToObserve.forEach((ref) => {
         if (ref) observer.unobserve(ref);
       });
     };
@@ -145,14 +219,13 @@ export function Services() {
     visible: { opacity: 1, transition: { duration: 0.5 } },
   };
 
-  const contentVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+  const handleServiceClick = (serviceId: string, index: number) => {
+    setActiveServiceId(serviceId);
+    if (!isMobile && contentRefs.current[index]) {
+      contentRefs.current[index]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
   };
 
-  const activeServiceIndex = services.findIndex(s => s.title === activeService.title);
-  const Icon = activeService.icon;
-  const image = PlaceHolderImages.find(img => img.id === activeService.id);
 
   if (isMobile) {
     return (
@@ -186,59 +259,16 @@ export function Services() {
             </motion.p>
           </div>
           <div className="space-y-16">
-            {services.map((service, index) => {
-              const mobileImage = PlaceHolderImages.find(img => img.id === service.id);
-              return (
-              <motion.div 
-                key={service.title}
+            {services.map((service, index) => (
+              <div 
+                key={service.id}
                 ref={el => serviceRefs.current[index] = el}
                 data-index={index}
                 className="flex flex-col items-center text-center"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
-                variants={contentVariants}
               >
-                  <div className="w-20 h-20 bg-background rounded-full flex items-center justify-center shrink-0 mb-6 shadow-md border">
-                    <service.icon className="h-10 w-10 text-accent" />
-                  </div>
-                  <h3 className="text-2xl font-bold font-headline text-primary mb-3">{service.title}</h3>
-                  <p className="text-muted-foreground mb-4 max-w-xl">{service.description}</p>
-                   {mobileImage && (
-                    <div className="relative w-full aspect-video rounded-lg overflow-hidden my-6">
-                      <Image
-                        src={mobileImage.imageUrl}
-                        alt={service.title}
-                        fill
-                        className="object-cover"
-                        data-ai-hint={mobileImage.imageHint}
-                      />
-                    </div>
-                  )}
-                  <p className="text-base font-medium text-foreground mb-6 max-w-xl">{service.valueProposition}</p>
-                  <div>
-                    <h4 className="text-lg font-semibold text-primary mb-4">What to Expect:</h4>
-                    <ul className="space-y-2 text-muted-foreground text-left max-w-md mx-auto">
-                      {service.customerExpectations.map((item, itemIndex) => (
-                        <li key={itemIndex} className="flex items-start gap-3">
-                          <CheckCircle2 className="h-5 w-5 text-accent shrink-0 mt-0.5" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <Sheet>
-                    <SheetTrigger asChild>
-                      <Button size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90">
-                        Request Service <ArrowRight className="ml-2 h-5 w-5" />
-                      </Button>
-                    </SheetTrigger>
-                    <SheetContent>
-                      <ServiceRequestForm serviceName={service.serviceName} />
-                    </SheetContent>
-                  </Sheet>
-              </motion.div>
-            )})}
+                  <ServiceContent service={service} />
+              </div>
+            ))}
           </div>
         </div>
       </motion.section>
@@ -276,28 +306,28 @@ export function Services() {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 min-h-[600px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
           <div className="md:col-span-1">
               <div className="sticky top-24 space-y-2">
                 {services.map((service, index) => (
                   <button
-                    key={service.title}
-                    onClick={() => setActiveService(service)}
+                    key={service.id}
+                    onClick={() => handleServiceClick(service.id, index)}
                     className={cn(
                       "w-full text-left p-4 rounded-lg transition-all duration-300 border border-transparent",
-                      activeService.title === service.title
+                      activeServiceId === service.id
                         ? "bg-background shadow-md border-border/50"
                         : "hover:bg-background/50"
                     )}
                   >
                     <div className="flex items-center gap-4">
                       <div className={cn("w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-colors", 
-                        activeService.title === service.title ? 'bg-accent text-accent-foreground' : 'bg-muted text-muted-foreground'
+                        activeServiceId === service.id ? 'bg-accent text-accent-foreground' : 'bg-muted text-muted-foreground'
                       )}>
                         <service.icon className="h-6 w-6" />
                       </div>
                       <h3 className={cn("text-base font-semibold text-primary transition-colors",
-                         activeService.title !== service.title && "text-muted-foreground group-hover:text-primary"
+                         activeServiceId !== service.id && "text-muted-foreground group-hover:text-primary"
                       )}>{service.title}</h3>
                     </div>
                   </button>
@@ -305,72 +335,21 @@ export function Services() {
               </div>
           </div>
 
-          <div className="md:col-span-2">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeService.title}
-                initial="hidden"
-                animate="visible"
-                exit="hidden"
-                variants={contentVariants}
-                className="bg-background/80 p-8 rounded-xl shadow-lg border border-border/60"
-              >
-                  <div className="flex items-start md:items-center gap-4 mb-4 flex-col md:flex-row">
-                      <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center shrink-0">
-                          <Icon className="h-8 w-8 text-accent" />
-                      </div>
-                      <div>
-                          <h3 className="text-2xl font-bold font-headline text-primary">{activeService.serviceName}</h3>
-                          <p className="text-muted-foreground">{activeService.description}</p>
-                      </div>
-                  </div>
-
-                   {image && (
-                    <motion.div 
-                      className="relative w-full aspect-video rounded-lg overflow-hidden my-6"
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.4, delay: 0.1 }}
-                    >
-                      <Image
-                        src={image.imageUrl}
-                        alt={activeService.title}
-                        fill
-                        className="object-cover"
-                        data-ai-hint={image.imageHint}
-                      />
-                    </motion.div>
-                  )}
-
-                  <p className="text-base font-medium text-foreground my-6 leading-relaxed">{activeService.valueProposition}</p>
-                  
-                  <div>
-                    <h4 className="text-lg font-semibold text-primary mb-4">What to Expect:</h4>
-                    <ul className="space-y-3 text-muted-foreground">
-                      {activeService.customerExpectations.map((item, index) => (
-                        <li key={index} className="flex items-start gap-3">
-                          <CheckCircle2 className="h-5 w-5 text-accent shrink-0 mt-0.5" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <Sheet>
-                    <SheetTrigger asChild>
-                      <Button size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90 w-full md:w-auto">
-                        Request Service <ArrowRight className="ml-2 h-5 w-5" />
-                      </Button>
-                    </SheetTrigger>
-                    <SheetContent>
-                      <ServiceRequestForm serviceName={activeService.serviceName} />
-                    </SheetContent>
-                  </Sheet>
-              </motion.div>
-            </AnimatePresence>
+          <div className="md:col-span-2 space-y-8">
+            {services.map((service, index) => (
+                <div 
+                  key={service.id} 
+                  ref={el => contentRefs.current[index] = el}
+                  data-index={index}
+                >
+                  <ServiceContent service={service} />
+                </div>
+            ))}
           </div>
         </div>
       </div>
     </motion.section>
   );
 }
+
+    
