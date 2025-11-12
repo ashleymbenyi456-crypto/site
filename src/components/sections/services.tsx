@@ -1,6 +1,7 @@
 
 "use client";
 
+import * as React from "react";
 import {
   Search,
   Megaphone,
@@ -11,7 +12,7 @@ import {
   CheckCircle2,
   ArrowRight,
 } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -109,7 +110,7 @@ const services = [
 ];
 
 
-function ServiceCard({ service }: { service: typeof services[0] }) {
+function ServiceCard({ service, onHover }: { service: typeof services[0], onHover: (icon: React.ElementType) => void }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const Icon = service.icon;
 
@@ -120,9 +121,8 @@ function ServiceCard({ service }: { service: typeof services[0] }) {
 
   return (
     <div
-      className="perspective-1000 w-full h-[550px] md:h-[500px]"
-      onMouseEnter={() => setIsFlipped(true)}
-      onMouseLeave={() => setIsFlipped(false)}
+      className="perspective-1000 w-full h-[320px] md:h-[350px]"
+      onMouseEnter={() => onHover(Icon)}
       onClick={() => setIsFlipped(!isFlipped)}
     >
       <motion.div
@@ -141,9 +141,6 @@ function ServiceCard({ service }: { service: typeof services[0] }) {
           )}
         >
           <Card className="h-full flex flex-col items-center justify-center text-center p-6 bg-card group hover:shadow-xl transition-shadow duration-300 border-2 border-transparent hover:border-accent/50">
-            <div className="w-20 h-20 bg-secondary rounded-full flex items-center justify-center mb-6 border-2 border-border group-hover:border-accent/30 group-hover:bg-accent/10 transition-all duration-300">
-              <Icon className="h-10 w-10 text-accent" />
-            </div>
             <CardTitle className="font-headline text-2xl text-primary mb-2">
               {service.title}
             </CardTitle>
@@ -197,17 +194,11 @@ function ServiceCard({ service }: { service: typeof services[0] }) {
 
 
 export function Services() {
+  const [activeIcon, setActiveIcon] = useState(services[0].icon);
+
   const sectionVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { duration: 0.5 } },
-  };
-
-  const listVariants = {
-    visible: {
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
   };
 
   const itemVariants = {
@@ -221,6 +212,17 @@ export function Services() {
       },
     },
   };
+
+  const gridItems = [
+    services[0],
+    services[1],
+    null, // Placeholder for center element
+    services[2],
+    services[3],
+    services[4],
+    null, // Placeholder for center element
+    services[5]
+  ];
 
   return (
     <motion.section
@@ -252,19 +254,70 @@ export function Services() {
               Our suite of digital marketing services is designed to deliver measurable results and turn your vision into reality.
             </motion.p>
         </div>
-        <motion.div
-          className="grid gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3"
-          variants={listVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-        >
-          {services.map((service) => (
-             <motion.div key={service.id} variants={itemVariants}>
-                <ServiceCard service={service} />
-             </motion.div>
-          ))}
-        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 items-center">
+          {/* Service cards on the left */}
+          <div className="lg:col-span-1 flex flex-col gap-8">
+            <motion.div variants={itemVariants}>
+              <ServiceCard service={services[0]} onHover={setActiveIcon} />
+            </motion.div>
+            <motion.div variants={itemVariants}>
+              <ServiceCard service={services[1]} onHover={setActiveIcon} />
+            </motion.div>
+          </div>
+          
+          {/* Centerpiece */}
+          <motion.div 
+            className="lg:col-span-2 hidden lg:flex justify-center items-center h-full"
+            initial={{ scale: 0.8, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.3, ease: 'easeOut' }}
+            viewport={{ once: true, amount: 0.5 }}
+          >
+            <div className="relative w-80 h-80 rounded-full flex items-center justify-center bg-background/50 shadow-2xl">
+               <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full" />
+               <div className="absolute inset-5 bg-background rounded-full" />
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeIcon.displayName}
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.5 }}
+                  transition={{ duration: 0.2 }}
+                  className="relative z-10"
+                >
+                  {activeIcon &&
+                    React.createElement(activeIcon, {
+                      className: "h-32 w-32 text-accent",
+                    })}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </motion.div>
+
+           {/* Service cards on the right */}
+           <div className="lg:col-span-1 flex flex-col gap-8">
+            <motion.div variants={itemVariants}>
+              <ServiceCard service={services[2]} onHover={setActiveIcon} />
+            </motion.div>
+            <motion.div variants={itemVariants}>
+              <ServiceCard service={services[3]} onHover={setActiveIcon} />
+            </motion.div>
+          </div>
+        </div>
+         {/* Bottom row of service cards for all screen sizes */}
+         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 items-center mt-8">
+            <div className="lg:col-start-2">
+                <motion.div variants={itemVariants}>
+                    <ServiceCard service={services[4]} onHover={setActiveIcon} />
+                </motion.div>
+            </div>
+             <div >
+                <motion.div variants={itemVariants}>
+                    <ServiceCard service={services[5]} onHover={setActiveIcon} />
+                </motion.div>
+            </div>
+         </div>
       </div>
     </motion.section>
   );
