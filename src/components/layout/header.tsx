@@ -1,0 +1,79 @@
+"use client";
+
+import Link from "next/link";
+import { MountainIcon, MenuIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+} from "@/components/ui/sheet";
+import { useState } from "react";
+
+export function Header() {
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  const navItems = [
+    { href: "#services", label: "Services" },
+    { href: "#portfolio", label: "Portfolio" },
+    { href: "#testimonials", label: "Testimonials" },
+    { href: "/content-ideation", label: "Content Ideation" },
+    { href: "#contact", label: "Contact" },
+  ];
+
+  const handleLinkClick = () => {
+    setIsSheetOpen(false);
+  };
+  
+  return (
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
+        <Link href="/" className="flex items-center gap-2" prefetch={false}>
+          <MountainIcon className="h-6 w-6 text-primary" />
+          <span className="text-lg font-bold">Global Leap Marketing</span>
+        </Link>
+        <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
+          {navItems.map((item) => (
+            <Link
+              key={item.label}
+              href={item.href}
+              className="transition-colors hover:text-primary"
+              prefetch={false}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+          <SheetTrigger asChild>
+            <Button variant="outline" size="icon" className="md:hidden">
+              <MenuIcon className="h-6 w-6" />
+              <span className="sr-only">Toggle navigation menu</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right">
+            <div className="grid gap-6 p-6">
+                <Link href="/" className="flex items-center gap-2" prefetch={false} onClick={handleLinkClick}>
+                    <MountainIcon className="h-6 w-6 text-primary" />
+                    <span className="text-lg font-bold">Global Leap</span>
+                </Link>
+                <nav className="grid gap-4">
+                {navItems.map((item) => (
+                    <Link
+                    key={item.label}
+                    href={item.href}
+                    className="py-2 text-lg font-medium transition-colors hover:text-primary"
+                    prefetch={false}
+                    onClick={handleLinkClick}
+                    >
+                    {item.label}
+                    </Link>
+                ))}
+                </nav>
+            </div>
+          </SheetContent>
+        </Sheet>
+      </div>
+    </header>
+  );
+}
