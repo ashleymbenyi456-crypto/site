@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -30,6 +31,7 @@ import {
   MousePointerClick,
   BarChart,
   CheckCircle2,
+  Hand,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "../ui/button";
@@ -239,7 +241,7 @@ export function Services() {
             <Dialog key={service.title}>
               <DialogTrigger asChild>
                 <motion.div variants={itemVariants} className="h-full">
-                  <Card className="bg-background/80 border-border/60 hover:border-accent transition-all duration-300 hover:shadow-xl hover:-translate-y-2 group h-full cursor-pointer">
+                  <Card className="relative bg-background/80 border-border/60 hover:border-accent transition-all duration-300 hover:shadow-xl hover:-translate-y-2 group h-full cursor-pointer overflow-hidden">
                     <CardHeader className="flex flex-row items-start gap-4">
                       <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center shrink-0">
                         <Icon className="h-6 w-6 text-accent transition-transform duration-300 group-hover:scale-110" />
@@ -249,6 +251,24 @@ export function Services() {
                     <CardContent>
                       <p className="text-muted-foreground text-sm">{service.description}</p>
                     </CardContent>
+                    <motion.div
+                      className="absolute bottom-4 right-4 text-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      initial={{ scale: 0, rotate: 15 }}
+                      whileHover={{ scale: 1.1, rotate: 0 }}
+                      animate={{
+                        opacity: [0, 1, 0.8, 1],
+                        y: [0, -5, 0],
+                      }}
+                      transition={{
+                        delay: 0.2,
+                        duration: 0.8,
+                        repeat: Infinity,
+                        repeatType: 'reverse',
+                        ease: 'easeInOut',
+                      }}
+                    >
+                      <Hand className="h-6 w-6" />
+                    </motion.div>
                   </Card>
                 </motion.div>
               </DialogTrigger>
@@ -305,3 +325,5 @@ export function Services() {
     </motion.section>
   );
 }
+
+  
