@@ -35,6 +35,42 @@
       "description": "A friendly female marketing director with a natural background.",
       "imageUrl": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxwZXJzb24lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjI5MzU5MTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "person portrait"
+    },
+    {
+      "id": "service-1",
+      "description": "Magnifying glass over a computer screen showing search engine results.",
+      "imageUrl": "https://images.unsplash.com/photo-1686061593213-98dad7c599b9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxTRU8lMjBhbmFseXRpY3N8ZW58MHx8fHwxNzYyOTUyNjUwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "SEO analytics"
+    },
+    {
+      "id": "service-2",
+      "description": "People interacting with social media icons on their phones.",
+      "imageUrl": "https://images.unsplash.com/photo-1603145733146-ae562a55031e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxzb2NpYWwlMjBtZWRpYXxlbnwwfHx8fDE3NjI4NjM4Mjd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "social media"
+    },
+    {
+      "id": "service-3",
+      "description": "A person writing in a notebook with a laptop nearby.",
+      "imageUrl": "https://images.unsplash.com/photo-1678798694643-2b8fddcf900f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb250ZW50JTIwY3JlYXRpb258ZW58MHx8fHwxNzYyODQ2MDkxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "content creation"
+    },
+    {
+      "id": "service-4",
+      "description": "An email inbox on a laptop screen.",
+      "imageUrl": "https://images.unsplash.com/photo-1584438784894-089d6a62b8fa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxlbWFpbCUyMG1hcmtldGluZ3xlbnwwfHx8fDE3NjI5NTI2NTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "email marketing"
+    },
+    {
+      "id": "service-5",
+      "description": "A cursor clicking on a 'buy now' button.",
+      "imageUrl": "https://images.unsplash.com/photo-1749321485863-29e9cf0f40c2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxQUEMlMjBhZHZlcnRpc2luZ3xlbnwwfHx8fDE3NjI5NTI2NTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "PPC advertising"
+    },
+    {
+      "id": "service-6",
+      "description": "A dashboard with graphs and charts showing business analytics.",
+      "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxidXNpbmVzcyUyMGFuYWx5dGljc3xlbnwwfHx8fDE3NjI5NDk2MjJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "business analytics"
     }
   ]
 }

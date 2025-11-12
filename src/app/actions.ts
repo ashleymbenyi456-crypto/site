@@ -1,3 +1,4 @@
+
 "use server";
 
 import { z } from "zod";
@@ -42,7 +43,7 @@ export async function submitContactForm(
   try {
     // Here you would typically send an email, save to a CRM, etc.
     // For this example, we'll just simulate a successful submission with a delay.
-    console.log("New contact form submission:", validatedFields.data);
+    console.log("New form submission:", validatedFields.data);
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     return {

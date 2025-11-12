@@ -9,14 +9,21 @@ import {
   MousePointerClick,
   BarChart,
   CheckCircle2,
+  ArrowRight,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { ServiceRequestForm } from "./service-request-form";
 
 const services = [
   {
+    id: "service-1",
     icon: Search,
     title: "Get Found By Customers",
     serviceName: "Search Engine Optimization (SEO)",
@@ -30,6 +37,7 @@ const services = [
     ],
   },
   {
+    id: "service-2",
     icon: Megaphone,
     title: "Build a Loyal Following",
     serviceName: "Social Media Marketing",
@@ -43,6 +51,7 @@ const services = [
     ],
   },
   {
+    id: "service-3",
     icon: PenTool,
     title: "Become an Industry Voice",
     serviceName: "Content Creation",
@@ -56,6 +65,7 @@ const services = [
     ],
   },
   {
+    id: "service-4",
     icon: Mail,
     title: "Drive Repeat Business",
     serviceName: "Email Marketing",
@@ -69,6 +79,7 @@ const services = [
     ],
   },
   {
+    id: "service-5",
     icon: MousePointerClick,
     title: "Generate Immediate Leads",
     serviceName: "PPC Advertising",
@@ -82,6 +93,7 @@ const services = [
     ],
   },
   {
+    id: "service-6",
     icon: BarChart,
     title: "Make Smarter Decisions",
     serviceName: "Analytics & Reporting",
@@ -142,6 +154,7 @@ export function Services() {
 
   const activeServiceIndex = services.findIndex(s => s.title === activeService.title);
   const Icon = activeService.icon;
+  const image = PlaceHolderImages.find(img => img.id === activeService.id);
 
   if (isMobile) {
     return (
@@ -175,7 +188,9 @@ export function Services() {
             </motion.p>
           </div>
           <div className="space-y-16">
-            {services.map((service, index) => (
+            {services.map((service, index) => {
+              const mobileImage = PlaceHolderImages.find(img => img.id === service.id);
+              return (
               <motion.div 
                 key={service.title}
                 ref={el => serviceRefs.current[index] = el}
@@ -190,6 +205,17 @@ export function Services() {
                   </div>
                   <h3 className="text-2xl font-bold font-headline text-primary mb-3">{service.title}</h3>
                   <p className="text-muted-foreground mb-4 max-w-xl">{service.description}</p>
+                   {mobileImage && (
+                    <div className="relative w-full aspect-video rounded-lg overflow-hidden my-6">
+                      <Image
+                        src={mobileImage.imageUrl}
+                        alt={service.title}
+                        fill
+                        className="object-cover"
+                        data-ai-hint={mobileImage.imageHint}
+                      />
+                    </div>
+                  )}
                   <p className="text-base font-medium text-foreground mb-6 max-w-xl">{service.valueProposition}</p>
                   <div>
                     <h4 className="text-lg font-semibold text-primary mb-4">What to Expect:</h4>
@@ -202,8 +228,18 @@ export function Services() {
                       ))}
                     </ul>
                   </div>
+                  <Sheet>
+                    <SheetTrigger asChild>
+                      <Button size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90">
+                        Request Service <ArrowRight className="ml-2 h-5 w-5" />
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent>
+                      <ServiceRequestForm serviceName={service.serviceName} />
+                    </SheetContent>
+                  </Sheet>
               </motion.div>
-            ))}
+            )})}
           </div>
         </div>
       </motion.section>
@@ -241,7 +277,7 @@ export function Services() {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 min-h-[500px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 min-h-[600px]">
           <div className="md:col-span-1">
               <div className="sticky top-24 space-y-2">
                 {services.map((service, index) => (
@@ -280,7 +316,7 @@ export function Services() {
                 variants={contentVariants}
                 className="bg-background/80 p-8 rounded-xl shadow-lg border border-border/60"
               >
-                  <div className="flex items-center gap-4 mb-4">
+                  <div className="flex items-start md:items-center gap-4 mb-4 flex-col md:flex-row">
                       <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center shrink-0">
                           <Icon className="h-8 w-8 text-accent" />
                       </div>
@@ -289,6 +325,23 @@ export function Services() {
                           <p className="text-muted-foreground">{activeService.description}</p>
                       </div>
                   </div>
+
+                   {image && (
+                    <motion.div 
+                      className="relative w-full aspect-video rounded-lg overflow-hidden my-6"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.4, delay: 0.1 }}
+                    >
+                      <Image
+                        src={image.imageUrl}
+                        alt={activeService.title}
+                        fill
+                        className="object-cover"
+                        data-ai-hint={image.imageHint}
+                      />
+                    </motion.div>
+                  )}
 
                   <p className="text-base font-medium text-foreground my-6 leading-relaxed">{activeService.valueProposition}</p>
                   
@@ -303,6 +356,17 @@ export function Services() {
                       ))}
                     </ul>
                   </div>
+
+                  <Sheet>
+                    <SheetTrigger asChild>
+                      <Button size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90 w-full md:w-auto">
+                        Request Service <ArrowRight className="ml-2 h-5 w-5" />
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent>
+                      <ServiceRequestForm serviceName={activeService.serviceName} />
+                    </SheetContent>
+                  </Sheet>
               </motion.div>
             </AnimatePresence>
           </div>
