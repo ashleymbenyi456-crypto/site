@@ -102,14 +102,13 @@ export function Contact() {
           >
             <motion.div variants={itemVariants} className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm font-medium text-secondary-foreground">Contact Us</motion.div>
             <motion.h2 variants={itemVariants} className="text-3xl font-bold tracking-tight sm:text-4xl font-headline text-primary">
-              Let's Grow Your Business
+              Ready to Propel Your Brand?
             </motion.h2>
             <motion.p variants={itemVariants} className="text-muted-foreground md:text-lg">
-              Ready to take the next step? Fill out the form below for a free
-              consultation. We're excited to learn about your goals and how we can help you achieve them.
+              Let's turn your vision into measurable results. Fill out the form for a no-obligation strategy session, and we'll explore how we can elevate your marketing efforts.
             </motion.p>
             <motion.p variants={itemVariants} className="text-muted-foreground md:text-lg">
-              For general inquiries, you can also reach us at <a href="mailto:hello@globalleap.com" className="text-accent underline">hello@globalleap.com</a>.
+              For partnership inquiries or other questions, feel free to email us at <a href="mailto:hello@globalleap.com" className="text-accent underline">hello@globalleap.com</a>.
             </motion.p>
           </motion.div>
           <motion.div
