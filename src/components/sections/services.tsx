@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ServiceRequestForm } from "./service-request-form";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const services = [
   {
@@ -26,7 +27,7 @@ const services = [
     icon: Search,
     title: "Get Found By Customers",
     serviceName: "Search Engine Optimization (SEO)",
-    description: "Climb the search rankings to connect with customers looking for your solutions.",
+    description: "Climb the search rankings to connect with customers.",
     valueProposition: "Unlock sustainable growth by ranking higher than your competitors for the keywords that matter most to your business.",
     customerExpectations: [
       "A comprehensive audit of your website's current SEO performance.",
@@ -40,7 +41,7 @@ const services = [
     icon: Megaphone,
     title: "Build a Loyal Following",
     serviceName: "Social Media Marketing",
-    description: "Create a vibrant community around your brand and turn followers into customers.",
+    description: "Create a vibrant community and turn followers into customers.",
     valueProposition: "Transform your social channels into powerful revenue-driving engines by building an authentic connection with your audience.",
     customerExpectations: [
       "A tailored social media strategy for platforms like Instagram, Facebook, etc.",
@@ -54,7 +55,7 @@ const services = [
     icon: PenTool,
     title: "Become an Industry Voice",
     serviceName: "Content Creation",
-    description: "Establish your authority with high-value content that educates and inspires.",
+    description: "Establish authority with high-value content that inspires.",
     valueProposition: "Become the go-to authority in your industry with high-quality content that educates, entertains, and converts.",
     customerExpectations: [
       "A content strategy aligned with your marketing funnel and audience's needs.",
@@ -68,7 +69,7 @@ const services = [
     icon: Mail,
     title: "Drive Repeat Business",
     serviceName: "Email Marketing",
-    description: "Nurture customer relationships and boost lifetime value with personalized email campaigns.",
+    description: "Nurture relationships and boost lifetime value.",
     valueProposition: "Maximize customer lifetime value and drive repeat business with automated, personalized email campaigns that feel like a one-on-one conversation.",
     customerExpectations: [
       "Design and setup of email templates that match your branding.",
@@ -82,7 +83,7 @@ const services = [
     icon: MousePointerClick,
     title: "Generate Immediate Leads",
     serviceName: "PPC Advertising",
-    description: "Capture high-intent customers at the exact moment they're ready to buy.",
+    description: "Capture customers ready to buy.",
     valueProposition: "Achieve immediate, measurable results with data-driven PPC campaigns on Google, Facebook, and more, ensuring every dollar you spend is an investment in growth.",
     customerExpectations: [
       "Management of ad campaigns on platforms like Google Ads and Meta Ads.",
@@ -96,7 +97,7 @@ const services = [
     icon: BarChart,
     title: "Make Smarter Decisions",
     serviceName: "Analytics & Reporting",
-    description: "Turn marketing data into actionable insights that drive strategy and prove ROI.",
+    description: "Turn data into actionable insights and prove ROI.",
     valueProposition: "Turn data into decisions. We provide you with clear, actionable insights into your marketing performance so you can understand your ROI and identify new growth opportunities.",
     customerExpectations: [
       "Setup and configuration of analytics tools like Google Analytics 4.",
@@ -187,9 +188,6 @@ export function Services() {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 items-center"
             initial="hidden"
             animate="visible"
-            variants={{
-                visible: { transition: { staggerChildren: 0.05 }}
-            }}
         >
           <AnimatePresence>
             {!selectedService && (
@@ -197,7 +195,7 @@ export function Services() {
                     key="grid"
                     className="contents"
                     initial={{opacity: 1}}
-                    exit={{opacity: 0, transition: {duration: 0.2}}}
+                    exit={{opacity: 0, transition: {duration: 0.2, when: "afterChildren"}}}
                     variants={{
                         visible: { transition: { staggerChildren: 0.05 }}
                     }}
@@ -255,20 +253,19 @@ export function Services() {
                 className="col-span-1 md:col-span-2 lg:col-span-4 flex justify-center items-center p-4"
                 initial={{opacity: 0}}
                 animate={{opacity: 1, transition: {duration: 0.3, delay: 0.2}}}
-                exit={{opacity: 0, transition: {duration: 0.3}}}
+                exit={{opacity: 0, transition: {duration: 0.3, when: "beforeChildren"}}}
               >
                   <motion.div
                     layoutId="service-card"
-                    className="relative w-full max-w-4xl min-h-[500px] rounded-2xl bg-background shadow-2xl p-8 md:p-12"
+                    className="relative w-full max-w-4xl min-h-[500px] max-h-[90vh] rounded-2xl bg-background shadow-2xl flex flex-col"
                     transition={{ duration: 0.4, ease: 'easeOut' }}
-                    style={{ overflow: 'hidden' }}
                   >
                       <motion.button 
                         onClick={handleClose} 
                         className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors z-20"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1, transition: { delay: 0.3 } }}
-                        exit={{ opacity: 0, transition: { duration: 0.2 } }}
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1, transition: { delay: 0.3 } }}
+                        exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
                       >
                         <X className="h-6 w-6" />
                       </motion.button>
@@ -276,37 +273,41 @@ export function Services() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1, transition: { delay: 0.3 } }}
                         exit={{ opacity: 0, transition: { duration: 0.2 } }}
-                        className="flex flex-col md:flex-row gap-8 md:gap-12 h-full"
+                        className="flex-grow overflow-hidden"
                       >
-                        <div className="flex-shrink-0 flex flex-col items-center text-center md:text-left md:items-start">
-                          <div className="p-4 bg-secondary rounded-full mb-4 inline-flex border-2 border-accent/30 bg-accent/10">
-                            <ActiveIcon className="h-12 w-12 text-accent" />
-                          </div>
-                          <h2 className="text-3xl font-bold font-headline text-primary">{selectedService.serviceName}</h2>
-                          <p className="text-lg text-muted-foreground mt-2">{selectedService.valueProposition}</p>
-                           <Sheet>
-                            <SheetTrigger asChild>
-                              <Button size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90 w-full md:w-auto">
-                                Request Service <ArrowRight className="ml-2 h-4 w-4" />
-                              </Button>
-                            </SheetTrigger>
-                            <SheetContent className="p-0">
-                              <ServiceRequestForm serviceName={selectedService.serviceName} />
-                            </SheetContent>
-                          </Sheet>
-                        </div>
+                        <ScrollArea className="h-full">
+                          <div className="p-8 md:p-12 flex flex-col md:flex-row gap-8 md:gap-12">
+                            <div className="flex-shrink-0 flex flex-col items-center text-center md:text-left md:items-start md:w-1/3">
+                              <div className="p-4 bg-secondary rounded-full mb-4 inline-flex border-2 border-accent/30 bg-accent/10">
+                                <ActiveIcon className="h-12 w-12 text-accent" />
+                              </div>
+                              <h2 className="text-3xl font-bold font-headline text-primary">{selectedService.serviceName}</h2>
+                              <p className="text-lg text-muted-foreground mt-2">{selectedService.valueProposition}</p>
+                              <Sheet>
+                                <SheetTrigger asChild>
+                                  <Button size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90 w-full md:w-auto">
+                                    Request Service <ArrowRight className="ml-2 h-4 w-4" />
+                                  </Button>
+                                </SheetTrigger>
+                                <SheetContent className="p-0">
+                                  <ServiceRequestForm serviceName={selectedService.serviceName} />
+                                </SheetContent>
+                              </Sheet>
+                            </div>
 
-                        <div className="border-t md:border-t-0 md:border-l border-border mt-6 md:mt-0 md:pl-12 pt-6 md:pt-0">
-                          <h4 className="text-xl font-semibold text-primary mb-4">What to Expect:</h4>
-                          <ul className="space-y-3 text-muted-foreground text-base">
-                            {selectedService.customerExpectations.map((item, index) => (
-                              <li key={index} className="flex items-start gap-3">
-                                <CheckCircle2 className="h-5 w-5 text-accent shrink-0 mt-1" />
-                                <span>{item}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
+                            <div className="border-t md:border-t-0 md:border-l border-border mt-6 md:mt-0 md:pl-12 pt-6 md:pt-0 flex-1">
+                              <h4 className="text-xl font-semibold text-primary mb-4">What to Expect:</h4>
+                              <ul className="space-y-3 text-muted-foreground text-base">
+                                {selectedService.customerExpectations.map((item, index) => (
+                                  <li key={index} className="flex items-start gap-3">
+                                    <CheckCircle2 className="h-5 w-5 text-accent shrink-0 mt-1" />
+                                    <span>{item}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
+                        </ScrollArea>
                      </motion.div>
                   </motion.div>
               </motion.div>
@@ -317,3 +318,5 @@ export function Services() {
     </motion.section>
   );
 }
+
+    
