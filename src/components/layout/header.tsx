@@ -27,9 +27,10 @@ export function Header() {
   }, []);
 
   const navItems = [
+    { href: "#about", label: "About" },
     { href: "#services", label: "Services" },
     { href: "#portfolio", label: "Portfolio" },
-    { href: "#testimonials", label: "Testimonials" },
+    { href: "#faq", label: "FAQs" },
     { href: "#contact", label: "Contact" },
   ];
 
