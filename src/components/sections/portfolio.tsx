@@ -16,7 +16,7 @@ const portfolioItems = [
     title: "E-commerce SEO Overhaul",
     description:
       "Dramatically increased organic traffic by 150% and doubled conversion rates through a comprehensive on-page and technical SEO strategy.",
-    services: ["SEO", "Content Creation"],
+    services: ["SEO", "Content"],
   },
   {
     id: "portfolio-2",
@@ -32,19 +32,19 @@ const portfolioItems = [
     title: "Brand Launch & Content Strategy",
     description:
       "Established a new brand identity and grew a loyal customer base from the ground up with a targeted content and email marketing plan.",
-    services: ["Content Creation", "Email Marketing"],
+    services: ["Branding", "Email"],
   },
 ];
 
 export function Portfolio() {
   return (
-    <section id="portfolio" className="w-full py-12 md:py-24 lg:py-32">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="mb-12 text-center">
-          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline">
+    <section id="portfolio" className="w-full py-20 md:py-28 lg:py-32">
+      <div className="container mx-auto max-w-7xl px-4 md:px-6">
+        <div className="mb-16 text-center">
+          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline text-primary">
             Our Success Stories
           </h2>
-          <p className="mt-4 max-w-2xl mx-auto text-muted-foreground md:text-xl">
+          <p className="mt-4 max-w-3xl mx-auto text-muted-foreground md:text-xl">
             We deliver results. Explore a selection of our most impactful
             campaigns.
           </p>
@@ -55,21 +55,23 @@ export function Portfolio() {
             return (
               <Card
                 key={item.id}
-                className="overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+                className="overflow-hidden group transition-all duration-300 hover:shadow-xl"
               >
-                {image && (
-                  <Image
-                    src={image.imageUrl}
-                    alt={item.title}
-                    width={600}
-                    height={400}
-                    className="aspect-[3/2] w-full object-cover"
-                    data-ai-hint={image.imageHint}
-                  />
-                )}
+                <div className="overflow-hidden">
+                  {image && (
+                    <Image
+                      src={image.imageUrl}
+                      alt={item.title}
+                      width={600}
+                      height={400}
+                      className="aspect-[3/2] w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      data-ai-hint={image.imageHint}
+                    />
+                  )}
+                </div>
                 <CardHeader>
-                  <CardTitle>{item.title}</CardTitle>
                   <CardDescription>Client: {item.client}</CardDescription>
+                  <CardTitle className="font-headline text-2xl">{item.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground mb-4">

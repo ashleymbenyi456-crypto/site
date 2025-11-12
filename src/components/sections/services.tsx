@@ -1,6 +1,7 @@
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -15,32 +16,32 @@ import {
 
 const services = [
   {
-    icon: <Search className="h-10 w-10 text-primary" />,
-    title: "SEO",
+    icon: <Search className="h-8 w-8 text-accent" />,
+    title: "Search Engine Optimization",
     description: "Boost your visibility on search engines and attract high-quality organic traffic with our proven optimization strategies.",
   },
   {
-    icon: <Megaphone className="h-10 w-10 text-primary" />,
+    icon: <Megaphone className="h-8 w-8 text-accent" />,
     title: "Social Media Marketing",
     description: "Engage your audience, build brand loyalty, and drive conversions through targeted social media campaigns.",
   },
   {
-    icon: <PenTool className="h-10 w-10 text-primary" />,
+    icon: <PenTool className="h-8 w-8 text-accent" />,
     title: "Content Creation",
     description: "From blog posts to videos, we create compelling content that resonates with your audience and establishes you as an industry leader.",
   },
   {
-    icon: <Mail className="h-10 w-10 text-primary" />,
+    icon: <Mail className="h-8 w-8 text-accent" />,
     title: "Email Marketing",
     description: "Nurture leads and retain customers with personalized email campaigns that deliver value directly to their inboxes.",
   },
   {
-    icon: <MousePointerClick className="h-10 w-10 text-primary" />,
+    icon: <MousePointerClick className="h-8 w-8 text-accent" />,
     title: "PPC Advertising",
     description: "Get instant, targeted traffic and maximize your ROI with our expertly managed pay-per-click advertising campaigns.",
   },
   {
-    icon: <BarChart className="h-10 w-10 text-primary" />,
+    icon: <BarChart className="h-8 w-8 text-accent" />,
     title: "Analytics & Reporting",
     description: "Make data-driven decisions with comprehensive analytics and clear, actionable reports on your marketing performance.",
   },
@@ -48,25 +49,25 @@ const services = [
 
 export function Services() {
   return (
-    <section id="services" className="w-full py-12 md:py-24 lg:py-32 bg-muted">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="mb-12 text-center">
-          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline">
+    <section id="services" className="w-full py-20 md:py-28 lg:py-32 bg-secondary/50">
+      <div className="container mx-auto max-w-7xl px-4 md:px-6">
+        <div className="mb-16 text-center">
+          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline text-primary">
             Our Digital Marketing Services
           </h2>
-          <p className="mt-4 max-w-2xl mx-auto text-muted-foreground md:text-xl">
+          <p className="mt-4 max-w-3xl mx-auto text-muted-foreground md:text-xl">
             A complete suite of services to help your business grow and succeed
             in the digital world.
           </p>
         </div>
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service) => (
-            <Card key={service.title} className="text-center flex flex-col items-center p-6 transition-all duration-300 hover:shadow-lg hover:scale-105">
-              <CardHeader className="p-0 mb-4">
+            <Card key={service.title} className="bg-background/80 border-border/60 hover:border-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+              <CardHeader className="flex flex-row items-center gap-4">
                 {service.icon}
-                <CardTitle className="mt-4">{service.title}</CardTitle>
+                <CardTitle className="font-headline text-xl">{service.title}</CardTitle>
               </CardHeader>
-              <CardContent className="p-0">
+              <CardContent>
                 <p className="text-muted-foreground">{service.description}</p>
               </CardContent>
             </Card>

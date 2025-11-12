@@ -4,6 +4,7 @@ import { useFormState, useFormStatus } from "react-dom";
 import { generateContentIdeas } from "./actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
@@ -11,36 +12,24 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { useEffect } from "react";
-import { Loader2, Lightbulb, Rss, Youtube, Podcast } from "lucide-react";
+import { Loader2, Lightbulb, Rss, Youtube, Podcast, Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-
-const formSchema = z.object({
-  topic: z.string(),
-});
 
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" disabled={pending} className="w-full sm:w-auto">
+    <Button type="submit" disabled={pending} className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground">
       {pending ? (
         <>
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           Generating...
         </>
       ) : (
-        "Generate Ideas"
+        <>
+          <Sparkles className="mr-2 h-4 w-4" />
+          Generate Ideas
+        </>
       )}
     </Button>
   );
@@ -61,29 +50,24 @@ export default function ContentIdeationPage() {
     message: "",
   });
 
-  const form = useForm({
-    resolver: zodResolver(formSchema),
-    defaultValues: { topic: "" },
-  });
-
   useEffect(() => {
     if (state.status === "success") {
-      form.reset();
+       // We can keep the topic in the input if we want
     }
-  }, [state.status, form]);
+  }, [state.status]);
 
   return (
-    <div className="container mx-auto max-w-4xl py-12 px-4">
+    <div className="container mx-auto max-w-5xl py-12 px-4">
       <header className="text-center mb-12">
         <h1 className="text-4xl font-bold tracking-tight text-primary sm:text-5xl font-headline">
-          Content Ideation Tool
+          AI Content Ideation
         </h1>
-        <p className="mt-4 text-lg text-muted-foreground">
-          Enter an industry or topic to generate creative content ideas powered by AI.
+        <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
+          Stuck in a creative rut? Enter an industry or topic to generate a list of engaging content ideas powered by generative AI.
         </p>
       </header>
 
-      <Card className="mb-12 shadow-lg">
+      <Card className="mb-12 shadow-lg bg-secondary/30">
         <CardContent className="p-6">
           <form action={formAction} className="space-y-4">
             <div className="flex flex-col sm:flex-row gap-4">
@@ -108,21 +92,27 @@ export default function ContentIdeationPage() {
         </CardContent>
       </Card>
 
+      {state.status === 'loading' && (
+        <div className="flex justify-center items-center">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      )}
+
       {state.ideas && state.ideas.length > 0 && (
         <section>
-          <h2 className="text-3xl font-bold text-center mb-8 font-headline">
+          <h2 className="text-3xl font-bold text-center mb-8 font-headline text-primary">
             Your Generated Ideas
           </h2>
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {state.ideas.map((idea, index) => {
               const Icon = platformIcons[idea.platform] || Lightbulb;
               return (
-                <Card key={index} className="flex flex-col transition-all hover:shadow-xl">
+                <Card key={index} className="flex flex-col transition-all hover:shadow-xl bg-background">
                   <CardHeader>
-                    <div className="flex justify-between items-start">
-                        <CardTitle className="text-xl pr-4">{idea.title}</CardTitle>
-                        <Badge variant="secondary" className="flex-shrink-0">
-                            <Icon className="mr-1.5 h-4 w-4" />
+                    <div className="flex justify-between items-start gap-4">
+                        <CardTitle className="text-xl pr-4 font-headline">{idea.title}</CardTitle>
+                        <Badge variant="secondary" className="flex-shrink-0 bg-accent/10 text-accent-foreground border-accent/20">
+                            <Icon className="mr-1.5 h-4 w-4 text-accent" />
                             {idea.platform}
                         </Badge>
                     </div>

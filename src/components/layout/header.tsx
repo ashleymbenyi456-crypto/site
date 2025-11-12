@@ -17,7 +17,7 @@ export function Header() {
     { href: "#services", label: "Services" },
     { href: "#portfolio", label: "Portfolio" },
     { href: "#testimonials", label: "Testimonials" },
-    { href: "/content-ideation", label: "Content Ideation" },
+    { href: "/content-ideation", label: "AI Tools" },
     { href: "#contact", label: "Contact" },
   ];
 
@@ -26,18 +26,18 @@ export function Header() {
   };
   
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2" prefetch={false}>
           <MountainIcon className="h-6 w-6 text-primary" />
-          <span className="text-lg font-bold">Global Leap Marketing</span>
+          <span className="text-lg font-semibold font-headline">Global Leap</span>
         </Link>
         <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
           {navItems.map((item) => (
             <Link
               key={item.label}
               href={item.href}
-              className="transition-colors hover:text-primary"
+              className="transition-colors hover:text-accent"
               prefetch={false}
             >
               {item.label}

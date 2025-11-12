@@ -9,6 +9,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { Star } from "lucide-react";
 
 const testimonials = [
   {
@@ -36,13 +37,13 @@ const testimonials = [
 
 export function Testimonials() {
   return (
-    <section id="testimonials" className="w-full py-12 md:py-24 lg:py-32">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="mb-12 text-center">
-          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline">
+    <section id="testimonials" className="w-full py-20 md:py-28 lg:py-32 bg-secondary/50">
+      <div className="container mx-auto max-w-7xl px-4 md:px-6">
+        <div className="mb-16 text-center">
+          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline text-primary">
             What Our Clients Say
           </h2>
-          <p className="mt-4 max-w-2xl mx-auto text-muted-foreground md:text-xl">
+          <p className="mt-4 max-w-3xl mx-auto text-muted-foreground md:text-xl">
             Real stories from businesses we've helped to succeed.
           </p>
         </div>
@@ -51,7 +52,7 @@ export function Testimonials() {
             align: "start",
             loop: true,
           }}
-          className="w-full max-w-4xl mx-auto"
+          className="w-full max-w-6xl mx-auto"
         >
           <CarouselContent>
             {testimonials.map((testimonial) => {
@@ -60,21 +61,24 @@ export function Testimonials() {
               );
               return (
                 <CarouselItem key={testimonial.id} className="md:basis-1/2 lg:basis-1/3">
-                  <div className="p-1 h-full">
-                    <Card className="h-full flex flex-col">
-                      <CardContent className="flex flex-col items-center justify-center p-6 text-center flex-grow">
-                        <p className="text-lg font-medium mb-4">
+                  <div className="p-4 h-full">
+                    <Card className="h-full flex flex-col bg-background">
+                      <CardContent className="flex flex-col p-8 flex-grow">
+                        <div className="flex mb-4">
+                            {[...Array(5)].map((_,i) => <Star key={i} className="h-5 w-5 text-accent fill-accent" />)}
+                        </div>
+                        <p className="text-base font-medium mb-6 flex-grow">
                           "{testimonial.quote}"
                         </p>
                         <div className="flex items-center gap-4 mt-auto">
-                          <Avatar>
+                          <Avatar className="h-12 w-12">
                             {image && <AvatarImage src={image.imageUrl} alt={testimonial.name} data-ai-hint={image.imageHint}/>}
                             <AvatarFallback>
                               {testimonial.name.charAt(0)}
                             </AvatarFallback>
                           </Avatar>
                           <div>
-                            <p className="font-semibold text-left">{testimonial.name}</p>
+                            <p className="font-semibold text-left font-headline">{testimonial.name}</p>
                             <p className="text-sm text-muted-foreground text-left">
                               {testimonial.company}
                             </p>
@@ -87,8 +91,8 @@ export function Testimonials() {
               );
             })}
           </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
+          <CarouselPrevious className="left-[-50px]"/>
+          <CarouselNext className="right-[-50px]"/>
         </Carousel>
       </div>
     </section>
