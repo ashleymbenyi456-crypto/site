@@ -19,12 +19,6 @@
       "imageHint": "health food"
     },
     {
-      "id": "about-us",
-      "description": "A diverse and collaborative team working together in a modern office.",
-      "imageUrl": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjb2xsYWJvcmF0aXZlJTIwdGVhbXxlbnwwfHx8fDE3NjMwMzk5NTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "collaborative team"
-    },
-    {
       "id": "service-1",
       "description": "Magnifying glass over a computer screen showing search engine results.",
       "imageUrl": "https://images.unsplash.com/photo-1686061593213-98dad7c599b9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxTRU8lMjBhbmFseXRpY3N8ZW58MHx8fHwxNzYyOTUyNjUwfDA&ixlib=rb-4.1.0&q=80&w=1080",

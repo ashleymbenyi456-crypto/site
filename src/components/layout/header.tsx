@@ -27,7 +27,7 @@ export function Header() {
   }, []);
 
   const navItems = [
-    { href: "#about", label: "About" },
+    { href: "#how-we-work", label: "Our Process" },
     { href: "#services", label: "Services" },
     { href: "#portfolio", label: "Portfolio" },
     { href: "#faq", label: "FAQs" },
