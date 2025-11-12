@@ -12,14 +12,14 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { useState, useEffect, useRef } from "react";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ServiceRequestForm } from "./service-request-form";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+
 
 const services = [
   {
@@ -108,176 +108,121 @@ const services = [
   },
 ];
 
-function ServiceContent({ service }: { service: typeof services[0] }) {
-  const image = PlaceHolderImages.find(img => img.id === service.id);
+
+function ServiceCard({ service }: { service: typeof services[0] }) {
+  const [isFlipped, setIsFlipped] = useState(false);
   const Icon = service.icon;
 
-  const contentVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+  const flipVariants = {
+    front: { rotateY: 0 },
+    back: { rotateY: 180 },
   };
 
   return (
-    <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.3 }}
-      variants={contentVariants}
-      className="bg-background/80 p-8 rounded-xl shadow-lg border border-border/60"
+    <div
+      className="perspective-1000 w-full h-[550px] md:h-[500px]"
+      onClick={() => setIsFlipped(!isFlipped)}
     >
-      <div className="flex items-start md:items-center gap-4 mb-4 flex-col md:flex-row">
-          <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center shrink-0">
-              <Icon className="h-8 w-8 text-accent" />
-          </div>
-          <div>
-              <h3 className="text-2xl font-bold font-headline text-primary">{service.serviceName}</h3>
-              <p className="text-muted-foreground">{service.description}</p>
-          </div>
-      </div>
-
-       {image && (
-        <motion.div 
-          className="relative w-full aspect-video rounded-lg overflow-hidden my-6"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4, delay: 0.1 }}
+      <motion.div
+        className="relative w-full h-full"
+        style={{ transformStyle: "preserve-3d" }}
+        initial={false}
+        animate={isFlipped ? "back" : "front"}
+        variants={flipVariants}
+        transition={{ duration: 0.6, ease: "easeInOut" }}
+      >
+        {/* Front of the card */}
+        <motion.div
+          className={cn(
+            "absolute w-full h-full backface-hidden",
+            "cursor-pointer"
+          )}
         >
-          <Image
-            src={image.imageUrl}
-            alt={service.title}
-            fill
-            className="object-cover"
-            data-ai-hint={image.imageHint}
-          />
+          <Card className="h-full flex flex-col items-center justify-center text-center p-6 bg-secondary/50 group hover:shadow-xl transition-shadow duration-300">
+            <div className="w-20 h-20 bg-background rounded-full flex items-center justify-center mb-6 border-2 border-border group-hover:border-accent transition-colors duration-300">
+              <Icon className="h-10 w-10 text-accent" />
+            </div>
+            <CardTitle className="font-headline text-2xl text-primary mb-2">
+              {service.title}
+            </CardTitle>
+            <CardDescription className="text-muted-foreground mb-6">
+              {service.description}
+            </CardDescription>
+            <Badge variant="outline">Click to see details</Badge>
+          </Card>
         </motion.div>
-      )}
 
-      <p className="text-base font-medium text-foreground my-6 leading-relaxed">{service.valueProposition}</p>
-      
-      <div>
-        <h4 className="text-lg font-semibold text-primary mb-4">What to Expect:</h4>
-        <ul className="space-y-3 text-muted-foreground">
-          {service.customerExpectations.map((item, index) => (
-            <li key={index} className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-accent shrink-0 mt-0.5" />
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90 w-full md:w-auto">
-            Request Service <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
-        </SheetTrigger>
-        <SheetContent>
-          <ServiceRequestForm serviceName={service.serviceName} />
-        </SheetContent>
-      </Sheet>
-    </motion.div>
-  )
+        {/* Back of the card */}
+        <motion.div
+          className={cn(
+            "absolute w-full h-full backface-hidden",
+            "cursor-pointer"
+          )}
+          style={{ transform: "rotateY(180deg)" }}
+        >
+          <Card className="h-full flex flex-col bg-secondary/80 p-6" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-xl font-bold font-headline text-primary">{service.serviceName}</h3>
+            <p className="text-base font-medium text-foreground my-4 leading-relaxed flex-grow">
+              {service.valueProposition}
+            </p>
+            <div>
+              <h4 className="text-md font-semibold text-primary mb-3">What to Expect:</h4>
+              <ul className="space-y-2 text-muted-foreground text-sm flex-grow">
+                {service.customerExpectations.map((item, index) => (
+                  <li key={index} className="flex items-start gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-accent shrink-0 mt-0.5" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+             <Sheet>
+              <SheetTrigger asChild>
+                <Button size="sm" className="mt-6 bg-accent text-accent-foreground hover:bg-accent/90 w-full">
+                  Request Service <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent>
+                <ServiceRequestForm serviceName={service.serviceName} />
+              </SheetContent>
+            </Sheet>
+          </Card>
+        </motion.div>
+      </motion.div>
+    </div>
+  );
 }
 
+
 export function Services() {
-  const [activeServiceId, setActiveServiceId] = useState(services[0].id);
-  const isMobile = useIsMobile();
-  const serviceRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const index = parseInt(entry.target.getAttribute('data-index') || '0', 10);
-            setActiveServiceId(services[index].id);
-          }
-        });
-      },
-      { 
-        rootMargin: isMobile ? "-50% 0px -50% 0px" : "-30% 0px -70% 0px",
-      }
-    );
-
-    const refsToObserve = isMobile ? serviceRefs.current : contentRefs.current;
-    
-    refsToObserve.forEach((ref) => {
-      if (ref) observer.observe(ref);
-    });
-
-    return () => {
-      refsToObserve.forEach((ref) => {
-        if (ref) observer.unobserve(ref);
-      });
-    };
-  }, [isMobile]);
-  
   const sectionVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { duration: 0.5 } },
   };
 
-  const handleServiceClick = (serviceId: string, index: number) => {
-    setActiveServiceId(serviceId);
-    if (!isMobile && contentRefs.current[index]) {
-      contentRefs.current[index]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
+  const listVariants = {
+    visible: {
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
   };
 
-
-  if (isMobile) {
-    return (
-      <motion.section 
-        id="services" 
-        className="w-full py-20 md:py-28 bg-secondary/50"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-        variants={sectionVariants}
-      >
-        <div className="container mx-auto max-w-7xl px-4 md:px-6">
-          <div className="mb-12 md:mb-16 text-center">
-            <motion.h2 
-              className="text-3xl font-bold tracking-tight sm:text-4xl font-headline text-primary"
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true, amount: 0.5 }}
-              transition={{ duration: 0.5 }}
-            >
-              How We Can Help You Grow
-            </motion.h2>
-            <motion.p 
-              className="mt-4 max-w-3xl mx-auto text-muted-foreground md:text-lg"
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true, amount: 0.5 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              Our suite of digital marketing services is designed to deliver measurable results and turn your vision into reality.
-            </motion.p>
-          </div>
-          <div className="space-y-16">
-            {services.map((service, index) => (
-              <div 
-                key={service.id}
-                ref={el => serviceRefs.current[index] = el}
-                data-index={index}
-                className="flex flex-col items-center text-center"
-              >
-                  <ServiceContent service={service} />
-              </div>
-            ))}
-          </div>
-        </div>
-      </motion.section>
-    )
-  }
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
 
   return (
-    <motion.section 
-      id="services" 
+    <motion.section
+      id="services"
       className="w-full py-20 md:py-28 bg-secondary/50"
       initial="hidden"
       whileInView="visible"
@@ -286,67 +231,38 @@ export function Services() {
     >
       <div className="container mx-auto max-w-7xl px-4 md:px-6">
         <div className="mb-12 md:mb-16 text-center">
-          <motion.h2 
-            className="text-3xl font-bold tracking-tight sm:text-4xl font-headline text-primary"
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.5 }}
-          >
-            How We Can Help You Grow
-          </motion.h2>
-          <motion.p 
-            className="mt-4 max-w-3xl mx-auto text-muted-foreground md:text-lg"
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            Our suite of digital marketing services is designed to deliver measurable results and turn your vision into reality.
-          </motion.p>
+            <motion.h2
+              className="text-3xl font-bold tracking-tight sm:text-4xl font-headline text-primary"
+              initial={{ y: 20, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.5 }}
+            >
+              How We Can Help You Grow
+            </motion.h2>
+            <motion.p
+              className="mt-4 max-w-3xl mx-auto text-muted-foreground md:text-lg"
+              initial={{ y: 20, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              Our suite of digital marketing services is designed to deliver measurable results and turn your vision into reality.
+            </motion.p>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-          <div className="md:col-span-1">
-              <div className="sticky top-24 space-y-2">
-                {services.map((service, index) => (
-                  <button
-                    key={service.id}
-                    onClick={() => handleServiceClick(service.id, index)}
-                    className={cn(
-                      "w-full text-left p-4 rounded-lg transition-all duration-300 border border-transparent",
-                      activeServiceId === service.id
-                        ? "bg-background shadow-md border-border/50"
-                        : "hover:bg-background/50"
-                    )}
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className={cn("w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-colors", 
-                        activeServiceId === service.id ? 'bg-accent text-accent-foreground' : 'bg-muted text-muted-foreground'
-                      )}>
-                        <service.icon className="h-6 w-6" />
-                      </div>
-                      <h3 className={cn("text-base font-semibold text-primary transition-colors",
-                         activeServiceId !== service.id && "text-muted-foreground group-hover:text-primary"
-                      )}>{service.title}</h3>
-                    </div>
-                  </button>
-                ))}
-              </div>
-          </div>
-
-          <div className="md:col-span-2 space-y-8">
-            {services.map((service, index) => (
-                <div 
-                  key={service.id} 
-                  ref={el => contentRefs.current[index] = el}
-                  data-index={index}
-                >
-                  <ServiceContent service={service} />
-                </div>
-            ))}
-          </div>
-        </div>
+        <motion.div
+          className="grid gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3"
+          variants={listVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+        >
+          {services.map((service) => (
+             <motion.div key={service.id} variants={itemVariants}>
+                <ServiceCard service={service} />
+             </motion.div>
+          ))}
+        </motion.div>
       </div>
     </motion.section>
   );
