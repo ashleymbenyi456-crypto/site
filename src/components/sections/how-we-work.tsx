@@ -1,8 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ScanSearch, Lightbulb, PencilRuler, Rocket, AreaChart } from "lucide-react";
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { motion, useInView, useAnimation } from "framer-motion";
+import { ScanSearch, Lightbulb, PencilRuler, Rocket, AreaChart, Icon } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { cn } from "@/lib/utils";
 
 const processSteps = [
   {
@@ -32,51 +33,59 @@ const processSteps = [
   },
 ];
 
-export function HowWeWork() {
-  const sectionVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 0.5 } },
-  };
+type Step = typeof processSteps[0];
 
-  const listVariants = {
-    visible: {
-      transition: { staggerChildren: 0.1, delayChildren: 0.2 },
-    },
-    hidden: {},
-  };
+function StepItem({ step, onInView, index }: { step: Step; onInView: (index: number) => void; index: number; }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { margin: "-50% 0px -50% 0px" });
+  const controls = useAnimation();
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut",
-      },
-    },
+  useEffect(() => {
+    if (isInView) {
+      onInView(index);
+      controls.start("visible");
+    } else {
+      controls.start("hidden");
+    }
+  }, [isInView, onInView, index, controls]);
+
+  const variants = {
+    visible: { opacity: 1, y: 0 },
+    hidden: { opacity: 0.5, y: 50 },
   };
 
   return (
-    <motion.section
-      id="how-we-work"
-      className="w-full py-20 md:py-28"
+    <motion.div
+      ref={ref}
+      className="mb-16"
+      animate={controls}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.1 }}
-      variants={sectionVariants}
+      variants={variants}
+      transition={{ duration: 0.5, ease: "easeOut" }}
     >
+      <h3 className="text-2xl font-bold font-headline text-primary mb-3">{step.title}</h3>
+      <p className="text-muted-foreground md:text-lg">{step.description}</p>
+    </motion.div>
+  );
+}
+
+export function HowWeWork() {
+  const [activeStepIndex, setActiveStepIndex] = useState(0);
+  const ActiveIcon = processSteps[activeStepIndex].icon;
+
+  return (
+    <section id="how-we-work" className="w-full py-20 md:py-28">
       <div className="container mx-auto max-w-7xl px-4 md:px-6">
-        <div className="mb-12 md:mb-16 text-center">
-          <motion.div
-            className="inline-block rounded-full bg-secondary px-4 py-1.5 text-sm font-medium text-secondary-foreground mb-4"
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.5 }}
-          >
-            Our Process
-          </motion.div>
+        <div className="text-center mb-12 md:mb-20">
+            <motion.div
+                className="inline-block rounded-full bg-secondary px-4 py-1.5 text-sm font-medium text-secondary-foreground mb-4"
+                initial={{ y: 20, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ duration: 0.5 }}
+            >
+                Our Process
+            </motion.div>
           <motion.h2
             className="text-3xl font-bold tracking-tight sm:text-4xl font-headline text-primary"
             initial={{ y: 20, opacity: 0 }}
@@ -97,32 +106,36 @@ export function HowWeWork() {
           </motion.p>
         </div>
 
-        <motion.div
-          className="relative grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-5"
-          variants={listVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-        >
-           <div className="absolute top-1/2 left-0 w-full h-px bg-border -translate-y-1/2 hidden lg:block" />
-          {processSteps.map((step, i) => (
-            <motion.div key={step.title} variants={itemVariants} className="relative">
-               <div className="absolute -top-3 left-1/2 w-px h-[calc(50%-1.5rem)] bg-border -translate-x-1/2 hidden lg:block" />
-              <Card className="h-full text-center bg-background hover:bg-card hover:shadow-lg transition-all duration-300 border-2 border-transparent hover:border-accent/50 group">
-                <CardHeader className="items-center">
-                    <div className="p-4 bg-secondary rounded-full mb-4 inline-flex border-2 border-transparent group-hover:border-accent/30 group-hover:bg-accent/10 transition-all duration-300">
-                        <step.icon className="h-7 w-7 text-accent" />
-                    </div>
-                  <CardTitle className="font-headline text-lg text-primary">{step.title}</CardTitle>
-                </CardHeader>
-                <CardDescription className="px-6 pb-6 text-sm">{step.description}</CardDescription>
-              </Card>
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-background border-2 border-border hidden lg:flex items-center justify-center" />
-               <div className="absolute top-1/2 left-1/2 w-px h-[calc(50%-1.5rem)] bg-border -translate-x-1/2 hidden lg:block" />
-            </motion.div>
-          ))}
-        </motion.div>
+        <div className="grid md:grid-cols-2 gap-16">
+          <div className="hidden md:block">
+            <div className="sticky top-28">
+              <div className="relative w-80 h-80 mx-auto rounded-full flex items-center justify-center bg-background shadow-2xl">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full" />
+                <div className="absolute inset-5 bg-background rounded-full" />
+                <motion.div
+                  key={activeStepIndex}
+                  initial={{ opacity: 0, scale: 0.5, rotate: -45 }}
+                  animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className="relative z-10"
+                >
+                  <ActiveIcon className="h-32 w-32 text-accent" />
+                </motion.div>
+              </div>
+            </div>
+          </div>
+          <div>
+            {processSteps.map((step, index) => (
+              <StepItem
+                key={index}
+                step={step}
+                index={index}
+                onInView={setActiveStepIndex}
+              />
+            ))}
+          </div>
+        </div>
       </div>
-    </motion.section>
+    </section>
   );
 }
