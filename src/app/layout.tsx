@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -7,6 +8,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { GeistSans } from "geist/font/sans";
 import { ThemeProvider } from "@/components/theme-provider";
+import { FloatingContactButton } from "@/components/layout/floating-contact-button";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -42,6 +44,7 @@ export default function RootLayout({
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
+            <FloatingContactButton />
           </div>
           <Toaster />
         </ThemeProvider>
