@@ -5,6 +5,12 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { ServiceRequestForm } from "./service-request-form";
 
 export function Hero() {
   const containerVariants = {
@@ -32,7 +38,7 @@ export function Hero() {
 
   return (
     <section className="relative w-full pt-32 pb-24 md:pt-40 md:pb-32 lg:pt-48 lg:pb-40 overflow-hidden">
-       <div
+      <div
         aria-hidden="true"
         className="absolute inset-0 grid grid-cols-2 -space-x-52 opacity-30 dark:opacity-20"
       >
@@ -71,11 +77,16 @@ export function Hero() {
           className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4"
           variants={itemVariants}
         >
-          <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 transition-transform duration-300 transform hover:scale-105 shadow-lg shadow-accent/20">
-            <Link href="#contact">
-              Get Free Consultation <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 transition-transform duration-300 transform hover:scale-105 shadow-lg shadow-accent/20">
+                Get Free Consultation <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="p-0">
+              <ServiceRequestForm serviceName="General Consultation" />
+            </DialogContent>
+          </Dialog>
           <Button asChild size="lg" variant="outline" className="transition-transform duration-300 transform hover:scale-105 bg-background/50">
             <Link href="#portfolio">View Our Work</Link>
           </Button>
