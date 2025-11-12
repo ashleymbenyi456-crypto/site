@@ -31,7 +31,6 @@ export function Header() {
     { href: "#services", label: "Services" },
     { href: "#how-we-work", label: "Our Process" },
     { href: "#portfolio", label: "Portfolio" },
-    { href: "#faq", label: "FAQs" },
     { href: "#contact", label: "Contact" },
   ];
 
