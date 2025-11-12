@@ -7,12 +7,12 @@ import { Users, Briefcase, Smile } from "lucide-react";
 const stats = [
   {
     icon: Briefcase,
-    value: "10+",
+    value: "2+",
     label: "Years of Experience",
   },
   {
     icon: Users,
-    value: "500+",
+    value: "15+",
     label: "Projects Completed",
   },
   {
