@@ -16,7 +16,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Global Grid Digital Marketing",
+  title: "The Global Grid",
   description: "Innovative Digital Marketing Solutions for Global Reach",
 };
 
