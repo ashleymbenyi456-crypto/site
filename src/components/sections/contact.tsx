@@ -1,7 +1,6 @@
 "use client";
 
 import { useActionState, useEffect, useRef } from "react";
-import { useFormStatus } from "react-dom";
 import { submitContactForm } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,8 +17,7 @@ import { Loader2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { motion } from "framer-motion";
 
-function SubmitButton() {
-  const { pending } = useFormStatus();
+function SubmitButton({ pending }: { pending: boolean }) {
   return (
     <Button type="submit" disabled={pending} size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
       {pending ? (
@@ -46,7 +44,7 @@ const services = [
 export function Contact() {
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
-  const [state, formAction] = useActionState(submitContactForm, {
+  const [state, formAction, isPending] = useActionState(submitContactForm, {
     status: "idle",
     message: "",
   });
@@ -80,16 +78,16 @@ export function Contact() {
   return (
     <motion.section
       id="contact"
-      className="w-full py-20 md:py-28 lg:py-32"
+      className="w-full py-20 md:py-28"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
       variants={sectionVariants}
     >
       <div className="container mx-auto max-w-7xl px-4 md:px-6">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
+        <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
           <motion.div
-            className="space-y-6"
+            className="space-y-4"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
@@ -102,14 +100,14 @@ export function Contact() {
             }}
           >
             <motion.div variants={itemVariants} className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm font-medium text-secondary-foreground">Contact Us</motion.div>
-            <motion.h2 variants={itemVariants} className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl font-headline text-primary">
+            <motion.h2 variants={itemVariants} className="text-3xl font-bold tracking-tight sm:text-4xl font-headline text-primary">
               Let's Grow Your Business
             </motion.h2>
-            <motion.p variants={itemVariants} className="text-muted-foreground md:text-xl">
+            <motion.p variants={itemVariants} className="text-muted-foreground md:text-lg">
               Ready to take the next step? Fill out the form below for a free
               consultation. We're excited to learn about your goals and how we can help you achieve them.
             </motion.p>
-            <motion.p variants={itemVariants} className="text-muted-foreground md:text-xl">
+            <motion.p variants={itemVariants} className="text-muted-foreground md:text-lg">
               For general inquiries, you can also reach us at <a href="mailto:hello@globalleap.com" className="text-accent underline">hello@globalleap.com</a>.
             </motion.p>
           </motion.div>
@@ -120,8 +118,8 @@ export function Contact() {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <form ref={formRef} action={formAction} className="space-y-6">
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <form ref={formRef} action={formAction} className="space-y-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="name">Name</Label>
                   <Input id="name" name="name" placeholder="Your Name" required />
@@ -171,14 +169,14 @@ export function Contact() {
                   id="message"
                   name="message"
                   placeholder="Tell us about your project..."
-                  rows={5}
+                  rows={4}
                   required
                 />
                 {state.errors?.message && (
                   <p className="text-sm text-destructive">{state.errors.message[0]}</p>
                 )}
               </div>
-              <SubmitButton />
+              <SubmitButton pending={isPending} />
             </form>
           </motion.div>
         </div>

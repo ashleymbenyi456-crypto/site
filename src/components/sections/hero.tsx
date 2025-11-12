@@ -31,7 +31,7 @@ export function Hero() {
 
   return (
     <motion.section
-      className="w-full py-24 md:py-32 lg:py-48 bg-grid-slate-50/[0.05]"
+      className="w-full py-24 md:py-32 lg:py-40"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -45,13 +45,13 @@ export function Hero() {
             Driving Growth Through Innovation
           </motion.div>
           <motion.h1
-            className="text-4xl font-bold tracking-tighter text-primary sm:text-6xl md:text-7xl lg:text-8xl font-headline"
+            className="text-4xl font-bold tracking-tighter text-primary sm:text-5xl md:text-6xl lg:text-7xl font-headline"
             variants={itemVariants}
           >
             Propel Your Brand to Global Heights
           </motion.h1>
           <motion.p
-            className="mt-6 text-lg text-muted-foreground md:text-xl max-w-3xl mx-auto"
+            className="mt-6 text-base text-muted-foreground md:text-xl max-w-3xl mx-auto"
             variants={itemVariants}
           >
             Global Leap Marketing delivers innovative digital marketing strategies
@@ -60,7 +60,7 @@ export function Hero() {
           </motion.p>
         </div>
         <motion.div
-          className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4"
+          className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4"
           variants={itemVariants}
         >
           <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 transition-transform duration-300 transform hover:scale-105">

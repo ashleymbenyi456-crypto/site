@@ -47,16 +47,16 @@ export function Testimonials() {
   return (
     <motion.section
       id="testimonials"
-      className="w-full py-20 md:py-28 lg:py-32 bg-secondary/50"
+      className="w-full py-20 md:py-28 bg-secondary/50"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
       variants={sectionVariants}
     >
       <div className="container mx-auto max-w-7xl px-4 md:px-6">
-        <div className="mb-16 text-center">
+        <div className="mb-12 md:mb-16 text-center">
           <motion.h2
-            className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl font-headline text-primary"
+            className="text-3xl font-bold tracking-tight sm:text-4xl font-headline text-primary"
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.5 }}
@@ -65,7 +65,7 @@ export function Testimonials() {
             What Our Clients Say
           </motion.h2>
           <motion.p
-            className="mt-4 max-w-3xl mx-auto text-muted-foreground md:text-xl"
+            className="mt-4 max-w-3xl mx-auto text-muted-foreground md:text-lg"
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.5 }}
@@ -79,7 +79,7 @@ export function Testimonials() {
             align: "start",
             loop: true,
           }}
-          className="w-full max-w-6xl mx-auto"
+          className="w-full max-w-xs sm:max-w-xl md:max-w-4xl lg:max-w-6xl mx-auto"
         >
           <CarouselContent>
             {testimonials.map((testimonial) => {
@@ -87,10 +87,10 @@ export function Testimonials() {
                 (img) => img.id === testimonial.id
               );
               return (
-                <CarouselItem key={testimonial.id} className="md:basis-1/2 lg:basis-1/3">
-                  <div className="p-4 h-full">
+                <CarouselItem key={testimonial.id} className="sm:basis-1/2 lg:basis-1/3">
+                  <div className="p-2 md:p-4 h-full">
                     <Card className="h-full flex flex-col bg-background">
-                      <CardContent className="flex flex-col p-8 flex-grow">
+                      <CardContent className="flex flex-col p-6 flex-grow">
                         <div className="flex mb-4">
                             {[...Array(5)].map((_,i) => <Star key={i} className="h-5 w-5 text-accent fill-accent" />)}
                         </div>
@@ -118,8 +118,8 @@ export function Testimonials() {
               );
             })}
           </CarouselContent>
-          <CarouselPrevious className="left-[-50px]"/>
-          <CarouselNext className="right-[-50px]"/>
+          <CarouselPrevious className="hidden md:flex left-[-50px]"/>
+          <CarouselNext className="hidden md:flex right-[-50px]"/>
         </Carousel>
       </div>
     </motion.section>
