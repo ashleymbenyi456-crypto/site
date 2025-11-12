@@ -15,7 +15,6 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ServiceRequestForm } from "./service-request-form";
@@ -27,7 +26,7 @@ const services = [
     icon: Search,
     title: "Get Found By Customers",
     serviceName: "Search Engine Optimization (SEO)",
-    description: "Climb the search rankings to connect with customers who are actively looking for your solutions.",
+    description: "Climb the search rankings to connect with customers looking for your solutions.",
     valueProposition: "Unlock sustainable growth by ranking higher than your competitors for the keywords that matter most to your business.",
     customerExpectations: [
       "A comprehensive audit of your website's current SEO performance.",
@@ -41,7 +40,7 @@ const services = [
     icon: Megaphone,
     title: "Build a Loyal Following",
     serviceName: "Social Media Marketing",
-    description: "Create a vibrant community around your brand and turn followers into lifelong customers.",
+    description: "Create a vibrant community around your brand and turn followers into customers.",
     valueProposition: "Transform your social channels into powerful revenue-driving engines by building an authentic connection with your audience.",
     customerExpectations: [
       "A tailored social media strategy for platforms like Instagram, Facebook, etc.",
@@ -55,7 +54,7 @@ const services = [
     icon: PenTool,
     title: "Become an Industry Voice",
     serviceName: "Content Creation",
-    description: "Establish your authority and build trust with high-value content that educates and inspires your audience.",
+    description: "Establish your authority with high-value content that educates and inspires.",
     valueProposition: "Become the go-to authority in your industry with high-quality content that educates, entertains, and converts.",
     customerExpectations: [
       "A content strategy aligned with your marketing funnel and audience's needs.",
@@ -69,7 +68,7 @@ const services = [
     icon: Mail,
     title: "Drive Repeat Business",
     serviceName: "Email Marketing",
-    description: "Nurture customer relationships and boost lifetime value with personalized, automated email campaigns.",
+    description: "Nurture customer relationships and boost lifetime value with personalized email campaigns.",
     valueProposition: "Maximize customer lifetime value and drive repeat business with automated, personalized email campaigns that feel like a one-on-one conversation.",
     customerExpectations: [
       "Design and setup of email templates that match your branding.",
@@ -83,7 +82,7 @@ const services = [
     icon: MousePointerClick,
     title: "Generate Immediate Leads",
     serviceName: "PPC Advertising",
-    description: "Capture high-intent customers at the exact moment they're ready to buy with targeted ad campaigns.",
+    description: "Capture high-intent customers at the exact moment they're ready to buy.",
     valueProposition: "Achieve immediate, measurable results with data-driven PPC campaigns on Google, Facebook, and more, ensuring every dollar you spend is an investment in growth.",
     customerExpectations: [
       "Management of ad campaigns on platforms like Google Ads and Meta Ads.",
@@ -97,7 +96,7 @@ const services = [
     icon: BarChart,
     title: "Make Smarter Decisions",
     serviceName: "Analytics & Reporting",
-    description: "Turn your marketing data into actionable insights that drive strategy and prove your return on investment.",
+    description: "Turn marketing data into actionable insights that drive strategy and prove ROI.",
     valueProposition: "Turn data into decisions. We provide you with clear, actionable insights into your marketing performance so you can understand your ROI and identify new growth opportunities.",
     customerExpectations: [
       "Setup and configuration of analytics tools like Google Analytics 4.",
@@ -113,7 +112,6 @@ type Service = (typeof services)[0];
 function ServiceCard({ service, onHover, onClick }: { service: Service; onHover: (icon: React.ElementType) => void; onClick: (service: Service) => void; }) {
   return (
     <motion.div
-      className="w-full h-[250px] md:h-[300px]"
       onMouseEnter={() => onHover(service.icon)}
       onClick={() => onClick(service)}
       variants={{
@@ -198,9 +196,8 @@ export function Services() {
                <motion.div 
                     key="grid"
                     className="contents"
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
+                    initial={{opacity: 1}}
+                    exit={{opacity: 0, transition: {duration: 0.2}}}
                     variants={{
                         visible: { transition: { staggerChildren: 0.05 }}
                     }}
@@ -223,7 +220,7 @@ export function Services() {
                     <div className="absolute inset-5 bg-background rounded-full" />
                     <AnimatePresence mode="wait">
                       <motion.div
-                        key={hoveredIcon.displayName}
+                        key={String(hoveredIcon)}
                         initial={{ opacity: 0, scale: 0.5 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.5 }}
@@ -256,6 +253,9 @@ export function Services() {
               <motion.div 
                 key="detail"
                 className="col-span-1 md:col-span-2 lg:col-span-4 flex justify-center items-center p-4"
+                initial={{opacity: 0}}
+                animate={{opacity: 1, transition: {duration: 0.3, delay: 0.2}}}
+                exit={{opacity: 0, transition: {duration: 0.3}}}
               >
                   <motion.div
                     layoutId="service-card"
@@ -268,7 +268,7 @@ export function Services() {
                         className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors z-20"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1, transition: { delay: 0.3 } }}
-                        exit={{ opacity: 0 }}
+                        exit={{ opacity: 0, transition: { duration: 0.2 } }}
                       >
                         <X className="h-6 w-6" />
                       </motion.button>
@@ -290,7 +290,7 @@ export function Services() {
                                 Request Service <ArrowRight className="ml-2 h-4 w-4" />
                               </Button>
                             </SheetTrigger>
-                            <SheetContent>
+                            <SheetContent className="p-0">
                               <ServiceRequestForm serviceName={selectedService.serviceName} />
                             </SheetContent>
                           </Sheet>
