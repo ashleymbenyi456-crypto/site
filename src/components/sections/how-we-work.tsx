@@ -108,8 +108,8 @@ export function HowWeWork() {
 
         <div className="grid md:grid-cols-2 gap-16">
           <div className="hidden md:block">
-            <div className="sticky top-28">
-              <div className="relative w-80 h-80 mx-auto rounded-full flex items-center justify-center bg-background shadow-2xl">
+            <div className="sticky top-36">
+              <div className="relative w-64 h-64 mx-auto rounded-full flex items-center justify-center bg-background shadow-2xl">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full" />
                 <div className="absolute inset-5 bg-background rounded-full" />
                 <motion.div
@@ -119,7 +119,7 @@ export function HowWeWork() {
                   transition={{ duration: 0.4, ease: "easeOut" }}
                   className="relative z-10"
                 >
-                  <ActiveIcon className="h-32 w-32 text-accent" />
+                  <ActiveIcon className="h-24 w-24 text-accent" />
                 </motion.div>
               </div>
             </div>
