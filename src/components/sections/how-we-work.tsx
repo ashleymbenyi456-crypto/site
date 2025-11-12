@@ -2,31 +2,32 @@
 
 import { motion } from "framer-motion";
 import { ScanSearch, Lightbulb, PencilRuler, Rocket, AreaChart } from "lucide-react";
+import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
 const processSteps = [
   {
     icon: ScanSearch,
-    title: "Discovery & Research",
-    description: "We start by diving deep into your business, market, and competition. This phase is all about understanding your unique challenges and opportunities.",
+    title: "1. Discovery & Research",
+    description: "We start by diving deep into your business, market, and competition to understand your unique challenges and opportunities.",
   },
   {
     icon: Lightbulb,
-    title: "Strategy & Planning",
-    description: "Based on our findings, we craft a bespoke marketing strategy and a clear roadmap with measurable goals, timelines, and KPIs.",
+    title: "2. Strategy & Planning",
+    description: "We craft a bespoke marketing strategy and a clear roadmap with measurable goals, timelines, and KPIs based on our findings.",
   },
   {
     icon: PencilRuler,
-    title: "Implementation & Execution",
+    title: "3. Implementation",
     description: "Our team gets to work, executing the plan with precision. From creating content to launching campaigns, we handle it all.",
   },
   {
     icon: Rocket,
-    title: "Launch & Optimization",
-    description: "As your campaigns go live, we monitor performance closely, making data-driven adjustments to maximize your return on investment.",
+    title: "4. Optimization",
+    description: "As campaigns go live, we monitor performance closely, making data-driven adjustments to maximize your return on investment.",
   },
   {
     icon: AreaChart,
-    title: "Analysis & Reporting",
+    title: "5. Analysis & Reporting",
     description: "We provide transparent, easy-to-understand reports that show you exactly what's working and how we're driving your growth.",
   },
 ];
@@ -39,8 +40,9 @@ export function HowWeWork() {
 
   const listVariants = {
     visible: {
-      transition: { staggerChildren: 0.15, delayChildren: 0.2 },
+      transition: { staggerChildren: 0.1, delayChildren: 0.2 },
     },
+    hidden: {},
   };
 
   const itemVariants = {
@@ -96,41 +98,25 @@ export function HowWeWork() {
         </div>
 
         <motion.div
-          className="relative"
+          className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-5"
           variants={listVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
         >
-          <div className="absolute left-1/2 top-10 hidden h-[calc(100%-5rem)] w-0.5 -translate-x-1/2 bg-border md:block" aria-hidden="true" />
-          <div className="grid gap-12 md:gap-0 md:grid-cols-1">
-            {processSteps.map((step, index) => (
-              <motion.div
-                key={step.title}
-                className="relative flex flex-col items-center md:flex-row md:items-start gap-6"
-                variants={itemVariants}
-              >
-                <div className="md:w-1/2 flex justify-start md:data-[align=right]:justify-end" data-align={index % 2 === 0 ? 'left' : 'right'}>
-                   <div className="w-full max-w-md space-y-3 text-center md:text-left md:data-[align=right]:text-right" data-align={index % 2 === 0 ? 'left' : 'right'}>
-                    <div className="flex items-center justify-center md:justify-start md:data-[align=right]:justify-end gap-3" data-align={index % 2 === 0 ? 'left' : 'right'}>
-                      <h3 className="text-xl font-bold font-headline text-primary">{step.title}</h3>
+          {processSteps.map((step) => (
+            <motion.div key={step.title} variants={itemVariants}>
+              <Card className="h-full text-center bg-background/50 hover:bg-card hover:shadow-lg transition-all duration-300">
+                <CardHeader className="items-center">
+                    <div className="p-4 bg-secondary rounded-full mb-4 inline-flex">
+                        <step.icon className="h-7 w-7 text-accent" />
                     </div>
-                    <p className="text-muted-foreground">{step.description}</p>
-                   </div>
-                </div>
-
-                <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 hidden md:flex items-center justify-center w-16 h-16 rounded-full bg-background border-2 border-border shadow-md">
-                    <step.icon className="h-7 w-7 text-accent" />
-                </div>
-                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-background border-2 border-border shadow-md md:hidden">
-                    <step.icon className="h-7 w-7 text-accent" />
-                </div>
-                
-                <div className="hidden md:block md:w-1/2" />
-
-              </motion.div>
-            ))}
-          </div>
+                  <CardTitle className="font-headline text-lg text-primary">{step.title}</CardTitle>
+                </CardHeader>
+                <CardDescription className="px-6 pb-6 text-sm">{step.description}</CardDescription>
+              </Card>
+            </motion.div>
+          ))}
         </motion.div>
       </div>
     </motion.section>
