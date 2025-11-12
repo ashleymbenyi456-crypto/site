@@ -8,16 +8,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogClose,
-  DialogFooter
-} from "@/components/ui/dialog";
-import {
   Accordion,
   AccordionContent,
   AccordionItem,
@@ -31,10 +21,10 @@ import {
   MousePointerClick,
   BarChart,
   CheckCircle2,
-  Hand,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { Button } from "../ui/button";
+import { useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const services = [
   {
@@ -177,6 +167,78 @@ const services = [
   },
 ];
 
+const ServiceCard = ({ service }: { service: typeof services[0] }) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+  const isMobile = useIsMobile();
+  const Icon = service.icon;
+
+  const handleInteraction = () => {
+    setIsFlipped(!isFlipped);
+  };
+
+  const cardVariants = {
+    front: { rotateY: 0 },
+    back: { rotateY: 180 },
+  };
+
+  return (
+    <motion.div
+      className="relative h-[380px] w-full"
+      style={{ perspective: 1000 }}
+      onMouseEnter={!isMobile ? () => setIsFlipped(true) : undefined}
+      onMouseLeave={!isMobile ? () => setIsFlipped(false) : undefined}
+      onClick={isMobile ? handleInteraction : undefined}
+    >
+      {/* Card Front */}
+      <motion.div
+        className="absolute w-full h-full"
+        style={{ backfaceVisibility: "hidden" }}
+        variants={cardVariants}
+        animate={isFlipped ? "back" : "front"}
+        transition={{ duration: 0.6 }}
+      >
+        <Card className="bg-background/80 border-border/60 transition-all duration-300 shadow-md h-full flex flex-col justify-center">
+          <CardHeader className="flex flex-col items-center text-center p-6">
+            <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center shrink-0 mb-4">
+              <Icon className="h-8 w-8 text-accent" />
+            </div>
+            <CardTitle className="font-headline text-xl text-primary">{service.title}</CardTitle>
+          </CardHeader>
+          <CardContent className="px-6 pb-6 text-center">
+            <p className="text-muted-foreground text-sm">{service.description}</p>
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {/* Card Back */}
+      <motion.div
+        className="absolute w-full h-full"
+        style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+        variants={cardVariants}
+        animate={isFlipped ? "front" : "back"}
+        transition={{ duration: 0.6 }}
+      >
+        <Card className="bg-background/80 border-accent/60 shadow-xl h-full flex flex-col p-6 overflow-y-auto">
+          <h3 className="text-lg font-semibold font-headline text-primary mb-2">{service.serviceName}</h3>
+          <p className="text-sm text-muted-foreground mb-4">{service.valueProposition}</p>
+          <div>
+            <h4 className="text-sm font-semibold text-primary mb-2">What to Expect:</h4>
+            <ul className="space-y-1.5 text-sm text-muted-foreground">
+              {service.customerExpectations.slice(0, 3).map((item, index) => (
+                <li key={index} className="flex items-start gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-accent shrink-0 mt-0.5" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Card>
+      </motion.div>
+    </motion.div>
+  );
+};
+
+
 export function Services() {
   const sectionVariants = {
     hidden: { opacity: 0 },
@@ -234,103 +296,19 @@ export function Services() {
           </motion.p>
         </div>
         <motion.div 
-          className="grid gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-3"
+          className="grid gap-8 md:gap-6 sm:grid-cols-2 lg:grid-cols-3"
           variants={listVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
         >
-          {services.map((service) => {
-            const Icon = service.icon;
-            return (
-            <Dialog key={service.title}>
-              <DialogTrigger asChild>
-                <motion.div variants={itemVariants} className="h-full">
-                  <Card className="relative bg-background/80 border-border/60 hover:border-accent transition-all duration-300 hover:shadow-xl hover:-translate-y-2 group h-full cursor-pointer overflow-hidden">
-                    <CardHeader className="flex flex-col items-center text-center p-6">
-                      <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center shrink-0 mb-4">
-                        <Icon className="h-8 w-8 text-accent transition-transform duration-300 group-hover:scale-110" />
-                      </div>
-                      <CardTitle className="font-headline text-xl text-primary">{service.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="px-6 pb-6 text-center">
-                      <p className="text-muted-foreground text-sm">{service.description}</p>
-                    </CardContent>
-                    <motion.div
-                      className="absolute bottom-4 right-4 text-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      initial={{ scale: 0, rotate: 15 }}
-                      whileHover={{ scale: 1.1, rotate: 0 }}
-                      animate={{
-                        opacity: [0, 1, 0.8, 1],
-                        y: [0, -5, 0],
-                      }}
-                      transition={{
-                        delay: 0.2,
-                        duration: 0.8,
-                        repeat: Infinity,
-                        repeatType: 'reverse',
-                        ease: 'easeInOut',
-                      }}
-                    >
-                      <Hand className="h-6 w-6" />
-                    </motion.div>
-                  </Card>
-                </motion.div>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-3xl max-h-[90dvh] overflow-y-auto">
-                <DialogHeader>
-                  <DialogTitle className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center shrink-0">
-                      <Icon className="h-6 w-6 text-accent" />
-                    </div>
-                    <span className="text-2xl font-headline text-primary">{service.serviceName}</span>
-                  </DialogTitle>
-                  <DialogDescription className="text-left py-4 text-base">
-                    {service.valueProposition}
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-6 py-4">
-                  <div>
-                    <h3 className="text-lg font-semibold font-headline text-primary mb-3">What to Expect</h3>
-                    <ul className="space-y-2">
-                      {service.customerExpectations.map((item, index) => (
-                        <li key={index} className="flex items-start gap-3">
-                          <CheckCircle2 className="h-5 w-5 text-accent shrink-0 mt-1" />
-                          <span className="text-muted-foreground">{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold font-headline text-primary mb-3">Frequently Asked Questions</h3>
-                    <Accordion type="single" collapsible className="w-full">
-                      {service.faqs.map((faq, index) => (
-                        <AccordionItem value={`item-${index}`} key={index}>
-                          <AccordionTrigger>{faq.question}</AccordionTrigger>
-                          <AccordionContent className="text-muted-foreground">
-                            {faq.answer}
-                          </AccordionContent>
-                        </AccordionItem>
-                      ))}
-                    </Accordion>
-                  </div>
-                </div>
-                <DialogFooter>
-                  <DialogClose asChild>
-                    <Button type="button" variant="secondary">
-                      Close
-                    </Button>
-                  </DialogClose>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-          )})}
+          {services.map((service) => (
+            <motion.div key={service.title} variants={itemVariants}>
+              <ServiceCard service={service} />
+            </motion.div>
+          ))}
         </motion.div>
       </div>
     </motion.section>
   );
 }
-
-  
-
-    
