@@ -2,18 +2,6 @@
 "use client";
 
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import {
   Search,
   Megaphone,
   PenTool,
@@ -22,9 +10,10 @@ import {
   BarChart,
   CheckCircle2,
 } from "lucide-react";
-import { motion } from "framer-motion";
-import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 
 const services = [
   {
@@ -39,16 +28,6 @@ const services = [
       "Ongoing on-page, off-page, and technical SEO optimizations.",
       "Transparent monthly reporting on key metrics like traffic, rankings, and conversions."
     ],
-    faqs: [
-      {
-        question: "How long does it take to see SEO results?",
-        answer: "SEO is a long-term strategy. While some improvements can be seen in as little as a few weeks, significant results in traffic and rankings typically take 4-6 months of consistent effort."
-      },
-      {
-        question: "What's the difference between on-page and off-page SEO?",
-        answer: "On-page SEO refers to optimizing elements on your website, like content and HTML. Off-page SEO refers to actions taken outside your site, like link building, to improve its authority."
-      }
-    ]
   },
   {
     icon: Megaphone,
@@ -57,21 +36,11 @@ const services = [
     description: "Create a vibrant community around your brand and turn followers into lifelong customers.",
     valueProposition: "Transform your social channels into powerful revenue-driving engines by building an authentic connection with your audience.",
     customerExpectations: [
-      "A tailored social media strategy for platforms like Instagram, Facebook, LinkedIn, etc.",
+      "A tailored social media strategy for platforms like Instagram, Facebook, etc.",
       "Creation and scheduling of high-quality, engaging content.",
       "Community management to foster engagement and respond to inquiries.",
       "Performance tracking and optimization of ad campaigns."
     ],
-    faqs: [
-      {
-        question: "Which social media platforms should my business be on?",
-        answer: "This depends on your target audience. We'll conduct research to determine where your ideal customers are most active and focus our efforts there for maximum impact."
-      },
-      {
-        question: "How do you measure social media ROI?",
-        answer: "We track key metrics like engagement rate, click-through rate, conversion rate, and cost per acquisition to measure the direct impact of our campaigns on your business goals."
-      }
-    ]
   },
   {
     icon: PenTool,
@@ -85,16 +54,6 @@ const services = [
       "High-quality video scripts and production coordination.",
       "Content distribution strategy to maximize reach and engagement."
     ],
-    faqs: [
-      {
-        question: "How does content marketing help my business?",
-        answer: "Content marketing builds trust, educates your audience, improves SEO, generates leads, and establishes your brand as a credible authority, all of which contribute to long-term growth."
-      },
-      {
-        question: "Who writes the content?",
-        answer: "We have a team of expert writers and creators who specialize in various industries. We'll match you with a creator who understands your niche and brand voice."
-      }
-    ]
   },
   {
     icon: Mail,
@@ -108,16 +67,6 @@ const services = [
       "A/B testing of subject lines and content to improve open and click rates.",
       "Segmentation of your email list for highly targeted messaging."
     ],
-    faqs: [
-      {
-        question: "Can you help me grow my email list?",
-        answer: "Yes! We can implement various strategies like lead magnets, website pop-ups, and targeted ads to help you build a high-quality email list of potential customers."
-      },
-      {
-        question: "What email marketing software do you use?",
-        answer: "We are experienced with a wide range of platforms, including Mailchimp, Klaviyo, ConvertKit, and more. We can work with your existing system or recommend the best one for your needs."
-      }
-    ]
   },
   {
     icon: MousePointerClick,
@@ -131,16 +80,6 @@ const services = [
       "Landing page optimization recommendations to improve conversion rates.",
       "Detailed reporting on ad spend, cost-per-click (CPC), and return on ad spend (ROAS)."
     ],
-    faqs: [
-      {
-        question: "How much should I spend on PPC?",
-        answer: "Your budget will depend on your industry, goals, and competition. We'll work with you to establish a starting budget and scale it responsibly as we gather data and prove ROI."
-      },
-      {
-        question: "What is a good ROAS (Return On Ad Spend)?",
-        answer: "A 'good' ROAS varies by industry and profit margins. A common benchmark is a 4:1 ratio ($4 in revenue for every $1 spent), but we will set specific goals based on your business."
-      }
-    ]
   },
   {
     icon: BarChart,
@@ -154,124 +93,130 @@ const services = [
       "In-depth analysis of user behavior, traffic sources, and conversion funnels.",
       "Regular strategy sessions to review performance and plan next steps."
     ],
-    faqs: [
-      {
-        question: "What KPIs should I be tracking?",
-        answer: "The most important Key Performance Indicators (KPIs) depend on your goals. We'll help you identify the right metrics, which might include website traffic, conversion rate, customer acquisition cost (CAC), and customer lifetime value (LTV)."
-      },
-      {
-        question: "How often will I receive reports?",
-        answer: "We provide comprehensive reports on a monthly basis, but our dashboards are available 24/7 for you to check performance at any time. We also schedule regular calls to discuss the results and our strategy."
-      }
-    ]
   },
 ];
 
-const ServiceCard = ({ service }: { service: typeof services[0] }) => {
-  const [isFlipped, setIsFlipped] = useState(false);
-  const isMobile = useIsMobile();
-  const Icon = service.icon;
-
-  const handleInteraction = () => {
-    setIsFlipped(!isFlipped);
-  };
-
-  const cardVariants = {
-    front: { rotateY: 0 },
-    back: { rotateY: 180 },
-  };
-
-  return (
-    <motion.div
-      className="relative h-[380px] w-full"
-      style={{ perspective: 1000 }}
-      onMouseEnter={!isMobile ? () => setIsFlipped(true) : undefined}
-      onMouseLeave={!isMobile ? () => setIsFlipped(false) : undefined}
-      onClick={isMobile ? handleInteraction : undefined}
-    >
-      {/* Card Front */}
-      <motion.div
-        className="absolute w-full h-full"
-        style={{ backfaceVisibility: "hidden" }}
-        variants={cardVariants}
-        animate={isFlipped ? "back" : "front"}
-        transition={{ duration: 0.6 }}
-      >
-        <Card className="bg-background/80 border-border/60 transition-all duration-300 shadow-md h-full flex flex-col justify-center">
-          <CardHeader className="flex flex-col items-center text-center p-6">
-            <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center shrink-0 mb-4">
-              <Icon className="h-8 w-8 text-accent" />
-            </div>
-            <CardTitle className="font-headline text-xl text-primary">{service.title}</CardTitle>
-          </CardHeader>
-          <CardContent className="px-6 pb-6 text-center">
-            <p className="text-muted-foreground text-sm">{service.description}</p>
-          </CardContent>
-        </Card>
-      </motion.div>
-
-      {/* Card Back */}
-      <motion.div
-        className="absolute w-full h-full"
-        style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
-        variants={cardVariants}
-        animate={isFlipped ? "front" : "back"}
-        transition={{ duration: 0.6 }}
-      >
-        <Card className="bg-background/80 border-accent/60 shadow-xl h-full flex flex-col p-6 overflow-y-auto">
-          <h3 className="text-lg font-semibold font-headline text-primary mb-2">{service.serviceName}</h3>
-          <p className="text-sm text-muted-foreground mb-4">{service.valueProposition}</p>
-          <div>
-            <h4 className="text-sm font-semibold text-primary mb-2">What to Expect:</h4>
-            <ul className="space-y-1.5 text-sm text-muted-foreground">
-              {service.customerExpectations.slice(0, 3).map((item, index) => (
-                <li key={index} className="flex items-start gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-accent shrink-0 mt-0.5" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </Card>
-      </motion.div>
-    </motion.div>
-  );
-};
-
-
 export function Services() {
+  const [activeService, setActiveService] = useState(services[0]);
+  const isMobile = useIsMobile();
+  const serviceRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = serviceRefs.current.indexOf(entry.target as HTMLDivElement);
+            if (index !== -1) {
+              setActiveService(services[index]);
+            }
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    const currentRefs = serviceRefs.current;
+    currentRefs.forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => {
+      currentRefs.forEach((ref) => {
+        if (ref) observer.unobserve(ref);
+      });
+    };
+  }, [isMobile]);
+  
   const sectionVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { duration: 0.5 } },
   };
 
-  const listVariants = {
-    visible: {
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
+  const contentVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
   };
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut",
-      },
-    },
-  };
-  
+  const activeServiceIndex = services.findIndex(s => s.title === activeService.title);
+  const Icon = activeService.icon;
+
+  if (isMobile) {
+    return (
+      <motion.section 
+        id="services" 
+        className="w-full py-20 md:py-28 bg-secondary/50"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        variants={sectionVariants}
+      >
+        <div className="container mx-auto max-w-7xl px-4 md:px-6">
+          <div className="mb-12 md:mb-16 text-center">
+            <motion.h2 
+              className="text-3xl font-bold tracking-tight sm:text-4xl font-headline text-primary"
+              initial={{ y: 20, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.5 }}
+            >
+              How We Can Help You Grow
+            </motion.h2>
+            <motion.p 
+              className="mt-4 max-w-3xl mx-auto text-muted-foreground md:text-lg"
+              initial={{ y: 20, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              Our suite of digital marketing services is designed to deliver measurable results and turn your vision into reality.
+            </motion.p>
+          </div>
+          <div className="space-y-16">
+            {services.map((service, index) => (
+              <motion.div 
+                key={service.title}
+                ref={el => serviceRefs.current[index] = el}
+                className="flex flex-col items-center text-center"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.3 }}
+                variants={contentVariants}
+              >
+                  <div className="w-20 h-20 bg-background rounded-full flex items-center justify-center shrink-0 mb-6 shadow-md border">
+                    <service.icon className="h-10 w-10 text-accent" />
+                  </div>
+                  <h3 className="text-2xl font-bold font-headline text-primary mb-3">{service.title}</h3>
+                  <p className="text-muted-foreground mb-4 max-w-xl">{service.description}</p>
+                  <p className="text-base font-medium text-foreground mb-6 max-w-xl">{service.valueProposition}</p>
+                  <div>
+                    <h4 className="text-lg font-semibold text-primary mb-4">What to Expect:</h4>
+                    <ul className="space-y-2 text-muted-foreground text-left max-w-md mx-auto">
+                      {service.customerExpectations.map((item, itemIndex) => (
+                        <li key={itemIndex} className="flex items-start gap-3">
+                          <CheckCircle2 className="h-5 w-5 text-accent shrink-0 mt-0.5" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.section>
+    )
+  }
+
   return (
     <motion.section 
       id="services" 
       className="w-full py-20 md:py-28 bg-secondary/50"
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
+      viewport={{ once: true, amount: 0.1 }}
       variants={sectionVariants}
     >
       <div className="container mx-auto max-w-7xl px-4 md:px-6">
@@ -295,19 +240,73 @@ export function Services() {
             Our suite of digital marketing services is designed to deliver measurable results and turn your vision into reality.
           </motion.p>
         </div>
-        <motion.div 
-          className="grid gap-8 md:gap-6 sm:grid-cols-2 lg:grid-cols-3"
-          variants={listVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-        >
-          {services.map((service) => (
-            <motion.div key={service.title} variants={itemVariants}>
-              <ServiceCard service={service} />
-            </motion.div>
-          ))}
-        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 min-h-[500px]">
+          <div className="md:col-span-1">
+              <div className="sticky top-24 space-y-2">
+                {services.map((service, index) => (
+                  <button
+                    key={service.title}
+                    onClick={() => setActiveService(service)}
+                    className={cn(
+                      "w-full text-left p-4 rounded-lg transition-all duration-300 border border-transparent",
+                      activeService.title === service.title
+                        ? "bg-background shadow-md border-border/50"
+                        : "hover:bg-background/50"
+                    )}
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className={cn("w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-colors", 
+                        activeService.title === service.title ? 'bg-accent text-accent-foreground' : 'bg-muted text-muted-foreground'
+                      )}>
+                        <service.icon className="h-6 w-6" />
+                      </div>
+                      <h3 className={cn("text-base font-semibold text-primary transition-colors",
+                         activeService.title !== service.title && "text-muted-foreground group-hover:text-primary"
+                      )}>{service.title}</h3>
+                    </div>
+                  </button>
+                ))}
+              </div>
+          </div>
+
+          <div className="md:col-span-2">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeService.title}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={contentVariants}
+                className="bg-background/80 p-8 rounded-xl shadow-lg border border-border/60"
+              >
+                  <div className="flex items-center gap-4 mb-4">
+                      <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center shrink-0">
+                          <Icon className="h-8 w-8 text-accent" />
+                      </div>
+                      <div>
+                          <h3 className="text-2xl font-bold font-headline text-primary">{activeService.serviceName}</h3>
+                          <p className="text-muted-foreground">{activeService.description}</p>
+                      </div>
+                  </div>
+
+                  <p className="text-base font-medium text-foreground my-6 leading-relaxed">{activeService.valueProposition}</p>
+                  
+                  <div>
+                    <h4 className="text-lg font-semibold text-primary mb-4">What to Expect:</h4>
+                    <ul className="space-y-3 text-muted-foreground">
+                      {activeService.customerExpectations.map((item, index) => (
+                        <li key={index} className="flex items-start gap-3">
+                          <CheckCircle2 className="h-5 w-5 text-accent shrink-0 mt-0.5" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
       </div>
     </motion.section>
   );
