@@ -39,8 +39,9 @@ import { Button } from "../ui/button";
 const services = [
   {
     icon: Search,
-    title: "Search Engine Optimization",
-    description: "Boost your visibility on search engines and attract high-quality organic traffic with our proven optimization strategies.",
+    title: "Get Found By Customers",
+    serviceName: "Search Engine Optimization (SEO)",
+    description: "Climb the search rankings to connect with customers who are actively looking for your solutions.",
     valueProposition: "Unlock sustainable growth by ranking higher than your competitors for the keywords that matter most to your business.",
     customerExpectations: [
       "A comprehensive audit of your website's current SEO performance.",
@@ -61,8 +62,9 @@ const services = [
   },
   {
     icon: Megaphone,
-    title: "Social Media Marketing",
-    description: "Engage your audience, build brand loyalty, and drive conversions through targeted social media campaigns.",
+    title: "Build a Loyal Following",
+    serviceName: "Social Media Marketing",
+    description: "Create a vibrant community around your brand and turn followers into lifelong customers.",
     valueProposition: "Transform your social channels into powerful revenue-driving engines by building an authentic connection with your audience.",
     customerExpectations: [
       "A tailored social media strategy for platforms like Instagram, Facebook, LinkedIn, etc.",
@@ -83,8 +85,9 @@ const services = [
   },
   {
     icon: PenTool,
-    title: "Content Creation",
-    description: "From blog posts to videos, we create compelling content that resonates with your audience and establishes you as an industry leader.",
+    title: "Become an Industry Voice",
+    serviceName: "Content Creation",
+    description: "Establish your authority and build trust with high-value content that educates and inspires your audience.",
     valueProposition: "Become the go-to authority in your industry with high-quality content that educates, entertains, and converts.",
     customerExpectations: [
       "A content strategy aligned with your marketing funnel and audience's needs.",
@@ -105,8 +108,9 @@ const services = [
   },
   {
     icon: Mail,
-    title: "Email Marketing",
-    description: "Nurture leads and retain customers with personalized email campaigns that deliver value directly to their inboxes.",
+    title: "Drive Repeat Business",
+    serviceName: "Email Marketing",
+    description: "Nurture customer relationships and boost lifetime value with personalized, automated email campaigns.",
     valueProposition: "Maximize customer lifetime value and drive repeat business with automated, personalized email campaigns that feel like a one-on-one conversation.",
     customerExpectations: [
       "Design and setup of email templates that match your branding.",
@@ -127,8 +131,9 @@ const services = [
   },
   {
     icon: MousePointerClick,
-    title: "PPC Advertising",
-    description: "Get instant, targeted traffic and maximize your ROI with our expertly managed pay-per-click advertising campaigns.",
+    title: "Generate Immediate Leads",
+    serviceName: "PPC Advertising",
+    description: "Capture high-intent customers at the exact moment they're ready to buy with targeted ad campaigns.",
     valueProposition: "Achieve immediate, measurable results with data-driven PPC campaigns on Google, Facebook, and more, ensuring every dollar you spend is an investment in growth.",
     customerExpectations: [
       "Management of ad campaigns on platforms like Google Ads and Meta Ads.",
@@ -149,8 +154,9 @@ const services = [
   },
   {
     icon: BarChart,
-    title: "Analytics & Reporting",
-    description: "Make data-driven decisions with comprehensive analytics and clear, actionable reports on your marketing performance.",
+    title: "Make Smarter Decisions",
+    serviceName: "Analytics & Reporting",
+    description: "Turn your marketing data into actionable insights that drive strategy and prove your return on investment.",
     valueProposition: "Turn data into decisions. We provide you with clear, actionable insights into your marketing performance so you can understand your ROI and identify new growth opportunities.",
     customerExpectations: [
       "Setup and configuration of analytics tools like Google Analytics 4.",
@@ -215,7 +221,7 @@ export function Services() {
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.5 }}
           >
-            Our Digital Marketing Services
+            How We Can Help You Grow
           </motion.h2>
           <motion.p 
             className="mt-4 max-w-3xl mx-auto text-muted-foreground md:text-lg"
@@ -224,8 +230,7 @@ export function Services() {
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            A complete suite of services to help your business grow and succeed
-            in the digital world.
+            Our suite of digital marketing services is designed to deliver measurable results and turn your vision into reality.
           </motion.p>
         </div>
         <motion.div 
@@ -242,13 +247,13 @@ export function Services() {
               <DialogTrigger asChild>
                 <motion.div variants={itemVariants} className="h-full">
                   <Card className="relative bg-background/80 border-border/60 hover:border-accent transition-all duration-300 hover:shadow-xl hover:-translate-y-2 group h-full cursor-pointer overflow-hidden">
-                    <CardHeader className="flex flex-row items-start gap-4">
-                      <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center shrink-0">
-                        <Icon className="h-6 w-6 text-accent transition-transform duration-300 group-hover:scale-110" />
+                    <CardHeader className="flex flex-col items-center text-center p-6">
+                      <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center shrink-0 mb-4">
+                        <Icon className="h-8 w-8 text-accent transition-transform duration-300 group-hover:scale-110" />
                       </div>
-                      <CardTitle className="font-headline text-xl text-primary mt-2">{service.title}</CardTitle>
+                      <CardTitle className="font-headline text-xl text-primary">{service.title}</CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="px-6 pb-6 text-center">
                       <p className="text-muted-foreground text-sm">{service.description}</p>
                     </CardContent>
                     <motion.div
@@ -278,7 +283,7 @@ export function Services() {
                     <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center shrink-0">
                       <Icon className="h-6 w-6 text-accent" />
                     </div>
-                    <span className="text-2xl font-headline text-primary">{service.title}</span>
+                    <span className="text-2xl font-headline text-primary">{service.serviceName}</span>
                   </DialogTitle>
                   <DialogDescription className="text-left py-4 text-base">
                     {service.valueProposition}
@@ -327,3 +332,5 @@ export function Services() {
 }
 
   
+
+    
