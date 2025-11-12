@@ -87,7 +87,7 @@ export function Services() {
       <div className="container mx-auto max-w-7xl px-4 md:px-6">
         <div className="mb-16 text-center">
           <motion.h2 
-            className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline text-primary"
+            className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl font-headline text-primary"
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.5 }}
@@ -118,7 +118,7 @@ export function Services() {
               <Card className="bg-background/80 border-border/60 hover:border-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full">
                 <CardHeader className="flex flex-row items-center gap-4">
                   {service.icon}
-                  <CardTitle className="font-headline text-xl">{service.title}</CardTitle>
+                  <CardTitle className="font-headline text-xl text-primary">{service.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">{service.description}</p>

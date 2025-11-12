@@ -39,7 +39,7 @@ export function Hero() {
       <div className="container mx-auto max-w-7xl px-4 md:px-6 text-center">
         <div className="max-w-4xl mx-auto">
           <motion.div
-            className="inline-block rounded-full bg-secondary px-3 py-1 text-sm font-medium text-primary mb-4"
+            className="inline-block rounded-full bg-secondary px-3 py-1 text-sm font-medium text-secondary-foreground mb-4"
             variants={itemVariants}
           >
             Driving Growth Through Innovation

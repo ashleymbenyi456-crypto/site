@@ -77,7 +77,7 @@ export function Portfolio() {
       <div className="container mx-auto max-w-7xl px-4 md:px-6">
         <div className="mb-16 text-center">
           <motion.h2
-            className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline text-primary"
+            className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl font-headline text-primary"
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.5 }}
@@ -124,7 +124,7 @@ export function Portfolio() {
                   </div>
                   <CardHeader>
                     <CardDescription>Client: {item.client}</CardDescription>
-                    <CardTitle className="font-headline text-2xl">{item.title}</CardTitle>
+                    <CardTitle className="font-headline text-2xl text-primary">{item.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-muted-foreground mb-4">

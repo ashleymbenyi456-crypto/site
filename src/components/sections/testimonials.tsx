@@ -56,7 +56,7 @@ export function Testimonials() {
       <div className="container mx-auto max-w-7xl px-4 md:px-6">
         <div className="mb-16 text-center">
           <motion.h2
-            className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline text-primary"
+            className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl font-headline text-primary"
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.5 }}
@@ -94,9 +94,9 @@ export function Testimonials() {
                         <div className="flex mb-4">
                             {[...Array(5)].map((_,i) => <Star key={i} className="h-5 w-5 text-accent fill-accent" />)}
                         </div>
-                        <p className="text-base font-medium mb-6 flex-grow">
+                        <blockquote className="text-base italic text-foreground mb-6 flex-grow">
                           "{testimonial.quote}"
-                        </p>
+                        </blockquote>
                         <div className="flex items-center gap-4 mt-auto">
                           <Avatar className="h-12 w-12">
                             {image && <AvatarImage src={image.imageUrl} alt={testimonial.name} data-ai-hint={image.imageHint}/>}
@@ -105,7 +105,7 @@ export function Testimonials() {
                             </AvatarFallback>
                           </Avatar>
                           <div>
-                            <p className="font-semibold text-left font-headline">{testimonial.name}</p>
+                            <p className="font-semibold text-left font-headline text-primary">{testimonial.name}</p>
                             <p className="text-sm text-muted-foreground text-left">
                               {testimonial.company}
                             </p>

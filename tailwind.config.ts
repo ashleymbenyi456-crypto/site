@@ -10,7 +10,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['var(--font-sans)', 'sans-serif'],
+        body: ['var(--font-inter)', 'sans-serif'],
         headline: ['var(--font-geist-sans)', 'sans-serif'],
       },
       colors: {
@@ -81,6 +81,10 @@ export default {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+      },
+      letterSpacing: {
+        tighter: '-0.05em',
+        tight: '-0.025em',
       },
     },
   },

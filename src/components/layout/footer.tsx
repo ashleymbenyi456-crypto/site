@@ -8,7 +8,7 @@ export function Footer() {
         <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
           <div className="flex items-center gap-3">
             <MountainIcon className="h-6 w-6 text-primary" />
-            <span className="text-lg font-semibold font-headline">Global Leap Marketing</span>
+            <span className="text-lg font-semibold font-headline text-primary">Global Leap Marketing</span>
           </div>
           <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} Global Leap Marketing. All rights reserved.</p>
           <div className="flex items-center gap-5">

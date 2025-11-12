@@ -101,8 +101,8 @@ export function Contact() {
               },
             }}
           >
-            <motion.div variants={itemVariants} className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm font-medium text-primary">Contact Us</motion.div>
-            <motion.h2 variants={itemVariants} className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline text-primary">
+            <motion.div variants={itemVariants} className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm font-medium text-secondary-foreground">Contact Us</motion.div>
+            <motion.h2 variants={itemVariants} className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl font-headline text-primary">
               Let's Grow Your Business
             </motion.h2>
             <motion.p variants={itemVariants} className="text-muted-foreground md:text-xl">
