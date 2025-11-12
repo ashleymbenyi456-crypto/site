@@ -17,7 +17,6 @@ export function Header() {
     { href: "#services", label: "Services" },
     { href: "#portfolio", label: "Portfolio" },
     { href: "#testimonials", label: "Testimonials" },
-    { href: "/content-ideation", label: "AI Tools" },
     { href: "#contact", label: "Contact" },
   ];
 
